@@ -1,0 +1,56 @@
+sudo apt-get install openssh-server
+
+sudo service ssh start
+
+sudo service ssh stop 
+
+porta padrão é 22
+
+ssh nomeusuario@ip-da-maquina -p numeroporta
+
+
+Mudar porta ssh:
+
+nano /etc/ssh/sshd_config
+
+Descomentar a linha Port 22
+
+Port 2345
+
+service sshd restart
+
+Descomentar a linha Port 2345
+
+Gerar um par de chaves ssh
+
+ssh-keygen -t rsa
+
+1 - Escolher local de armazenamento das chaves (deixar local padrão)
+
+2 - escrever uma frase de segurança (pode deixar vazio para n precisar inserir sempre que usar)
+
+Copiara a chave para a maquina remota
+
+ssh-copy-id user@serverip
+
+Pronto, para se conectar, use:
+
+ssh -p 'porta' 'usuario@ip'
+
+-------------------------
+
+Tranferir arquivo
+
+sftp vm-lucas-01@192.168.100.98
+
+(Porta customizadA)
+
+sftp -oPort=customport usuario@servidor_endereçodeip
+
+put arquivo local
+
+a letra l antes do comando, mostra a resposta do comando referente ao ambiente local
+
+o comando sem o l é referente a maquina remota conectada
+
+https://www.hostinger.com.br/tutoriais/como-usar-sftp-ssh-file-transfer-protocol

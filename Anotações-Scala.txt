@@ -1,0 +1,42 @@
+- É uma linguagem Funcional
+
+- É necessário a instalação do JVM (Java)
+
+- Necesário ter a variavel $SCALA_HOME -> Diretorio do SCALA
+
+- Spark tem uma exigencia em relação a versão do Scala (vs.2)
+
+- As variaveis são do tipo impricita  (não é necessário definir o tipo)
+
+- As variaveis são fortemente tipadas
+
+- para declarar uma variavel, basta colocar: 
+
+var ou val nome_variavel
+
+- Existe diferença entre val e var
+
+- Existe diferença entre aspas duplas e simples 
+-- Ao ter uma variavel inteira e é setado uma letra em aspas simples, a letra é convertida
+-- em numerica.
+
+- Um programa em Scala pode importar uma biblioteca escrita em Java
+-- obs: Quando vc quer importar todo o conteudo de uma biblioteca
+-- basta substituir o * por _
+
+- a palavra def (igual em python) cria um metodo ou função
+
+- o comando .foreach é declarado no final:
+// rquivos.filter(arq => ehImagem(arq.getName)).foreach()
+
+- o comando ends.With -> tras o conteudo do ultimo ponto (extensão)
+
+- quando é utilizado o _ dentro do conteudo, o mesmo é como um self
+-- Exemplo: arquivos.filter(arq => ehImagem(arq.getName)).foreach(_.delete)
+--- Atenção: o _.delete, faz referencia a arq, para fazer referencia a origem (arquivos)
+---- É necessário colocar _._ 
+
+- Se for estruturado com regras em Java, é possivel executar direto em java,
+- caso contrario, é necessário executar com Scala
+
+

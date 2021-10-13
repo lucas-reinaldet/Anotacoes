@@ -1,0 +1,12 @@
+Extensões Úteis
+
+1 - Material Icon Theme
+
+2 - Code Runner
+
+3 - Docker
+
+4 - Python
+
+5 - yaml
+

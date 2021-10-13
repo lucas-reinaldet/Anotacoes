@@ -1,0 +1,16 @@
+#
+#
+# Para a criação do projeto de API do Django Rest Framework, é utilizado como base, o proprio django. 
+# Sendo assim necessário a sua instalaçãop e configuração inicial.
+# 
+# Vale frisar que é possivel utilizar as funcionalidades dos dois frameworks. Utilizar a facilidade do 
+# django como aplicação WEB, e o Django Rest transformar o mesmo projeto em uma API.
+#
+# Basta criar APPS distintas para organizar de melhor maneira o seu código.
+#
+# Quando criado ua app para o Django Rest Framework, será necessário a criação de uma pasta (Package)
+# api onde possuirá o arquivo "__init__.py" que indica que aquela pasta é um package, um arquivo 
+# "serializers.py" onde será concentrado os locais de acesso externo e as "viewsets.py" onde será os 
+# controladores de fluxo.
+
+

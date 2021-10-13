@@ -1,0 +1,215 @@
+
+# YAML -> Linguagem de Marcação e Serialização de Dados
+# 
+# HTML, XML -> São linguagens de marcação
+
+# Serialização -> Tecnica de conversão de dados em bytes, podendo ser armazenamento em
+# disco ou mesmo seu envio através de streams (HTTP, Socket, etc)
+
+# É possivel integrar com as linguagens Python, Ruby, Java, etc.
+# Possui tipo de dados comuns como Escalares, Listas, Arrays, etc.
+# Comumente utilizada como arquivo de configuração ou armazenamento de dados.
+
+# Tem como objetivo:
+#     Linguagem de alto nivel;
+#     Portátil;
+#     Facil integração com outras linguagens;
+#     Fácil Implementação e Usabilidade;
+
+# Dica de Identação: Idente o código com espaços e não com TAB
+
+# Pode possuir como extensão:
+#     yaml
+#     yml
+#     
+# Porém a extensão não é importante, podendo ter qualquer tipo de extensão.
+
+# É preferivel que quando um valor inteiro não é utilizado para algum
+# tipo de computação, que o mesmo seja declarado como string
+
+# Valores Strings podem ser declarados sem aspas (quando estilo for bloco), 
+# com aspas simples ou aspas duplas.
+# Com aspas duplas é possivel declarar o "\n" para pular uma linha
+
+# É possivel ter uma arquivo yaml que possui apenas uma sequência de valores
+
+# Comentários sempre se iniciam com "#" (cerquilha) e espaço
+# E as linhas entre os dados é considerado como comentário, sendo
+# desconsiderado durante a execução
+
+# CTRL + / serve como tecla de atalho para comentar o contéudo 
+# para comentar mais de uma linha, basta selecionar o conteudo
+
+############### Sintaxe ###############
+
+# Chave & Valor
+# Os dois pontos deve ser juntos com o nome da váriavel
+# comumente chamado de "Chave & Valor"
+# chave: valor (com um espaço entre o dois pontos e valor)
+# É sempre importante lembrar da identação
+chave: valor
+
+# Dicionários / Map
+# O objeto possui dois atributos, onde cada um
+# possui a sua chave e o seu valor, 
+# Observação: A separação dos atributos (em modo bloco) não precisa de virgula
+# Possui uma Sequência de valores
+chaveprincipal:
+  # É importante lembrar que para fazer um bloco YAML é necessário possuir dois espaços
+  chave1: valor da primeira chave
+  chave2: valor da segunda chave
+
+# Lista / Array
+# Definir que o objeto é uma lista basta acrescentar antes do conteudo da lista
+# o traço antes do valor
+# Lista de Valores, Chave: valor 
+# (o "-" antes do valor indica que é um conteudo de uma lista)
+# Possui uma Sequência de valores
+lista:
+  - valor 01
+  - valor 02
+
+# Valores escalares possui apenas 1 valor
+
+# o "|" (Pipe) significa que é uma chave que possui valor escalar de multiplas linhas
+# quando apresentado será apresentado no mesmo formado declarado
+funcionamento: |
+  segunda
+  terça
+  quarta
+  quinta
+  sexta
+  sabado
+  domingo
+
+# o ">" (sinal de maior) significa que é uma chave que possui valor escalar de 
+# uma unica linha (o valor será apresentado como um unico texto)
+comentarios: >
+  Temos alto uso de CPU 
+  desde 2020.
+  Estamos investigando
+
+# ############## Estilo ###############
+
+# A linguagem Yaml possui dois estilos de identação
+
+# Estilo block (bloco)
+host1: geek
+datacenter1:
+  location1: Foz do Iguaçu
+  router1: 88
+roles1:
+  - web
+  - dns
+
+# Estilo flow 
+# Parecido com o formado Json
+host2: "outros"
+datacenter2: { location: São jose do rio preto, 
+  router: 10 }
+roles2: [ web, dns ]
+
+# ############## Estruturas ###############
+
+# Pode possuir multiplas estruturas, diretivas ou configurações em um unico arquivo
+# Essas diretivas são separadas por três traços "---"
+
+# Exemplo:
+
+# na primeira estrutura os três traços são opcionais
+
+---
+
+# Primeira estrutura/diretriz/configuração
+escola: geek
+localizacao:
+  cidade: Foz do Iguaçu
+  bairro: xxxx
+  rua: yyyy
+  numero: "50"
+cursos:
+  - web
+  - python
+
+---
+
+# Segunda estrutura/diretriz/configuração
+escola: Udemy
+localizacao:
+  cidade: São Paulo
+  bairro: xxxx
+  rua: yyyy
+  numero: "1524"
+cursos:
+  - web
+  - python
+
+---
+
+# n diretrizes ou configurações
+
+# ####### Tags ###############
+
+# Tags serve para configurar uma URL propria
+# com marcadores locais e tipo de dados
+
+# $TAG ! Prefixo
+
+# O VSCODE não reconhece TAGS E ÂNCORAS
+
+# definindo uma TAG chamada -> geek <- que indica um -> host <-
+%TAG ! tag:host:geek:
+
+---
+
+host: geek
+datacenter:
+  # Sempre será indicada com "!" e seu nome em maiusculo
+  location: !GEEK São Paulo 
+  router: "42"
+  switch: '34'
+
+---
+
+host: geek
+datacenter:
+  # Sempre será indicada com "!" e seu nome em maiusculo
+  location: !GEEK São Paulo 
+  router: !!str 42 # Declara que é String
+  switch: !!int 34 # declara que é inteiro
+
+# ############## Âncoras ###############
+
+
+# O VSCODE não reconhece TAGS E ÂNCORAS
+# Serve para armazenar e reusar dados
+
+# & -> Declarar
+# * -> Usar
+
+---
+
+host: geek
+datacenter:
+  location: &SP São Paulo 
+  router: "42"
+  switch: '34'
+
+---
+
+host: geek
+datacenter:
+  location: *SP
+  router: "42"
+  switch: '34'
+
+---
+
+roles: &ghost
+  - webserver
+  - database
+
+---
+
+roles: *ghost
+

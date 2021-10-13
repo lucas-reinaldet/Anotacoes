@@ -1,0 +1,110 @@
+Spark
+
+# Spark Streaming -> Processamento de dados sem a necessidade de ter o dado gravado em
+# algum lugar.
+#
+# Spark não é tão voltado para arquivos não estruturados (ex: Imagens);
+#
+# Em computação distribuida, o spark faz a soma do poder de processamento de todos os "computadores"
+# da rede.
+#
+# Spark SQL é capaz de fazer SQL em arquivos csv
+#
+# Spark Streaming -> Trabalha de forma geral com
+#
+# spark-shell -> abre um ambiente com todas as bibliotecas do spark***
+#
+# pyspark -> Console para programar em python no Spark
+#
+# RDDs -> Dados distruibuidos e Resilientes
+#
+# VAL -> Imutabilidade dos dados
+# VAR -> Possibilita a mutabilidade
+
+################
+
+Download do Spark
+
+wget https://dlcdn.apache.org/spark/spark-3.1.2/spark-3.1.2-bin-hadoop3.2.tgz
+
+################
+
+Extrair o conteudo do arquivo
+
+tar -xvzf spark-3.1.2-bin-hadoop3.2.tgz
+
+################
+
+Criar uma pasta e mover a pasta do spark para a mesma
+
+sudo mkdir /usr/local/share/spark && sudo mv spark-3.1.2-bin-hadoop3.2/ /usr/local/share/spark/
+
+################
+
+Acessar o usuário hadoop
+
+su hadoop
+
+Criar as variaveis no arquivo bashrc
+
+nano ~/.bashrc
+
+export SPARK_HOME=/usr/local/share/spark/spark-3.1.2-bin-hadoop3.2
+export PATH=$PATH:$SPARK_HOME/bin
+
+Aplicar modificações
+
+source ~/.bashrc
+
+################
+
+Abrir o Spark Shell
+
+spark-­shell
+
+################
+
+Sair do spark-shell
+
+:quit
+
+################
+
+
+
+
+
+
+val statesPopulationRDD = sc.textFile("hdfs://localhost:8020/user/hadoop/data/statesPopulation.csv")
+
+a quantidade de arquivos resultantes do pairRDD.saveAsSequenceFile("hdfs://localhost:8020/user/hadoop/data/seqFile")[salva a variavel no disco] é baseado 
+    na quantidade de processadores da máquina.
+
+O Spark quando não configurado, pega 100% do poder computacional da máquina. Pode ser setado pelo proprio
+    programador a quantidade de processadores e a quantidade de ram que poderá ser utilizado
+
+
+pairRDD.saveAsSequenceFile("hdfs://localhost:8020/user/hadoop/data/seqFile") -> arquivo hdfs
+
+
+Abre o ambiente de desenvolvimento
+
+spark-shell
+
+localhost -> ip da máquina mestre
+
+# Ler o arquivo
+val statesDF = spark.read.option("header",
+"true").option("inferschema", "true").option("sep",
+",").csv("hdfs://localhost:8020/user/hadoop/data/statesPopulation.csv")
+
+statesDF.explain(true)
+
+http://www.ambientelivre.com.br/projetos/book/9781785280849-SCALA_AND_SPARK_FOR_BIG_DATA_ANALYTICS.pdf
+
+spark.sql("select despesas._c0, despesas._c1, sum(despesas._c2) as Total from despesas group by despesas._c1").show
+
+val newcolnames = Seq("ano", "secretaria", "despesas")
+val despesas_col = despesas.toDF(newcolnames: _*)
+
+

@@ -1,0 +1,377 @@
+####
+##	Link: https://phoenixnap.com/kb/install-hadoop-ubuntu
+
+-----------------------------
+
+## É indicado a não utilização do soap do linux
+## Comando utéis (cria tanto os subdiretorios, quanto o diretorio raiz)
+
+mkdir -p diretorio/subdiretorio
+
+mkdir -p diretorio/{subdiretorio1,subdiretorio2,subdiretorio3,subdiretorio4}
+
+## Necessário estarem colados na virgula
+
+-----------------------------
+
+## Com usuário Principal e Hadoop
+## Instalando o Java
+
+sudo apt update
+
+sudo apt install openjdk-8-jdk -y
+
+java -version; javac -version
+
+## Achar a localização do JDK
+
+which javac
+
+readlink -f /usr/bin/javac
+
+## vai resultar no caminho do java para aplicar a variavel
+## (pegar apenas a pasta principal (antes de bin/javac)
+## Editar arquivo ~/.bashrc
+## Acrescentar ao final do arquivo
+
+export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+
+-----------------------------
+
+## Criando um usuário para o haddop
+
+sudo addgroup hadoop
+
+sudo adduser ­­--ingroup hadoop hadoop
+
+## Solicitara a criação de uma senha e info adicionais
+
+-----------------------------
+
+## logar com o user hadoop
+
+su hadoop 
+
+<senha>
+
+-----------------------------
+
+## Criar uma chave ssh
+
+ssh-keygen -t rsa -P ""
+
+## Adicionar a chave gerada na lista de autorizados
+
+cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+
+## mudando as permissões de conexão
+
+chmod 0600 ~/.ssh/authorized_keys
+
+## conectando ao localhost via ssh
+
+ssh localhost
+
+-----------------------------
+
+## Desabilitando o IPv6
+
+sudo nano /etc/sysctl.conf
+
+## Adicionar linhas no arquivo
+
+net.ipv6.conf.all.disable_ipv6 = 1
+net.ipv6.conf.default.disable_ipv6 = 1
+net.ipv6.conf.lo.disable_ipv6 = 1
+
+## Reiniciando a VM
+
+sudo shutdown ­-r now
+
+## Verificando se deu certo
+
+cat /proc/sys/net/ipv6/conf/all/disable_ipv6 
+
+## Se retornar 1, está correto
+
+-----------------------------
+
+## logar com o usuário hadoop
+
+su hadoop
+
+## fazer o download do hadoop
+## (arquivo binary)
+
+## http://hadoop.apache.org/
+
+### Utilizar o comando
+
+curl -O https://downloads.apache.org/hadoop/common/hadoop-3.3.1/hadoop-3.3.1.tar.gz
+
+### ou
+
+wget https://downloads.apache.org/hadoop/common/hadoop-3.3.1/hadoop-3.3.1.tar.gz
+
+## Descompactar
+
+tar xzf /opt/hadoop-3.3.1-src.tar.gz
+
+## Mover arquivo
+
+sudo mv hadoop-3.3.1-src /usr/local
+
+## Criar um link simbolico
+
+sudo ln ­s /usr/local/hadoop-3.3.1 hadoop
+
+-----------------------
+
+## Configurando variáveis de ambiente do Hadoop.
+## Logue com o usuário hadoop
+
+su ­ hadoop
+
+## entrar no diretorio do usuario
+
+cd ~
+
+## Achar a localização do JDK
+
+which javac
+
+readlink -f /usr/bin/javac
+
+## vai resultar no caminho do java para aplicar a variavel
+## (pegar apenas a pasta principal (antes de bin/javac)
+## editar arquivo ~/.bashrc
+
+nano ~/.bashrc
+
+## No final do arquivo acrescentar
+
+export HADOOP_HOME=/usr/local/hadoop-3.3.1
+export HADOOP_INSTALL=$HADOOP_HOME
+export HADOOP_MAPRED_HOME=$HADOOP_HOME
+export HADOOP_COMMON_HOME=$HADOOP_HOME
+export HADOOP_HDFS_HOME=$HADOOP_HOME
+export YARN_HOME=$HADOOP_HOME
+export HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_HOME/lib/native
+export PATH=$PATH:$HADOOP_INSTALL/bin
+export PATH=$PATH:$HADOOP_INSTALL/sbin
+export HADOOP_OPTS="-Djava.library.path=$HADOOP_HOME/lib/native"
+
+## Aplicando as alterações ao ambiente
+
+source ~/.bashrc
+
+**************
+
+## Editando o arquivo hadoop-env.sh
+## Logue com o usuário hadoop
+
+su­ hadoop
+
+## acesse o arquivo
+
+nano /usr/local/hadoop-3.3.1/etc/hadoop/hadoop-env.sh
+
+## Procurar no arquivo a variavel comentada JAVA_HOME, 
+## descomentar e atribuir a ela o caminho do JDK:
+
+export JAVA_HOME=$JAVA_HOME
+
+**************
+
+## Editar o arquivo core-site.xml
+## Logue com o usuário hadoop
+
+su ­ hadoop
+
+cd ~
+
+## Não existe a necessidade de criar pasta, ao realizar o hdfs format
+## ele criará sozinho
+## mkdir -p mydata/hdfs/tmpdata
+
+## Para configurar o Hadoop em um modo pseudo-distribuído,
+## você precisa especificar a URL para seu NameNode e o
+## diretório temporário que o Hadoop usa para mapear e
+## reduzir o processo.
+
+nano $HADOOP_HOME/etc/hadoop/core-site.xml
+
+## E modificar as configurações para:
+
+<configuration>
+	<property>
+		<name>hadoop.tmp.dir</name>
+		<value>/home/hadoop/mydata/hdfs/tmpdata</value>
+	</property>
+	<property>
+		<name>fs.default.name</name>
+		<value>hdfs://127.0.0.1:9000</value>
+	</property>
+</configuration>
+
+## Observação: As informações precisam ser consistentes 
+## com o seu sistema
+
+********
+
+## Editar arquivo hdfs-site.xml
+## Logue com o usuário hadoop
+
+su ­ hadoop
+
+## acesse a página home
+
+cd ~
+
+## Não existe a necessidade de criar pasta, ao realizar o hdfs format
+## ele criará sozinho
+## crie uma pasta
+## mkdir -p mydata/hdfs/{namenode,datanode}
+
+## As propriedades no arquivo hdfs-site.xml controlam o local para armazenar metadados de nó, 
+## arquivo fsimage e arquivo de log de edição. Configure o arquivo definindo os diretórios de 
+## Armazenamento NameNode e DataNode .
+
+nano $HADOOP_HOME/etc/hadoop/hdfs-site.xml
+
+## Modificar as configurações para:
+
+<configuration>
+	<property>
+		<name>dfs.namenode.name.dir</name>
+		<value>file:/home/hadoop/mydata/hdfs/namenode</value>
+	</property>
+	<property>
+		<name>dfs.datanode.data.dir</name>
+		<value>file:/home/hadoop/mydata/hdfs/datanode</value>
+	</property>
+	<property>
+		<name>dfs.replication</name>
+		<value>1</value>
+	</property>
+</configuration>
+
+## Observação: dfs.replication precisa ser alterado 1, já que possuimos apenas um nó.
+
+*************
+
+## Editar arquivo mapred-site.xml
+## Logue com o usuário hadoop
+
+su ­ hadoop
+
+## Use o seguinte comando para acessar o arquivo mapred-site.xml e definir os valores MapReduce :
+
+nano $HADOOP_HOME/etc/hadoop/mapred-site.xml
+
+## Modificar as configurações para:
+
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<configuration> 
+	<property>
+	     <name>mapreduce.framework.name</name>
+	     <value>yarn</value>
+	</property>
+</configuration>
+
+*****************
+
+# Editar o arquivo yarn-site.xml
+
+## Logue com o usuário hadoop
+
+su ­ hadoop
+
+## Edite o arquivo
+## O arquivo yarn-site.xml é usado para definir configurações relevantes para o  YARN . 
+## Ele contém configurações para o Node Manager, Resource Manager, Containers  e  Application Master .
+
+nano $HADOOP_HOME/etc/hadoop/yarn-site.xml
+
+## Modificar as configurações para:
+
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<configuration>
+	<property>
+		<name>yarn.nodemanager.aux-services</name>
+		<value>mapreduce_shuffle</value>
+	</property>
+	<property>
+		<name>yarn.nodemanager.aux-services.mapreduce.shuffle.class</name>
+		<value>org.apache.hadoop.mapred.ShuffleHandler</value>
+	</property>
+</configuration>
+
+*********************
+
+## Formatando o HDFS NameNode
+## É importante formatar o NameNode antes de iniciar os serviços Hadoop pela primeira vez:
+
+hdfs namenode -format
+
+---------------------------------------------
+
+## Inicializando os Serviços Hadoop
+
+start-dfs.sh
+
+*** 
+
+## Verificar como startar o serviço quando a porta do ssh é alterada 
+
+***
+
+-----------------------------------------------
+
+## Iniciar o Yarm
+
+start-yarn.sh
+
+---------------------------------------------
+
+## Observação: Caso ocorra algum erro, os seguintes comandos pode ajudar:
+
+sudo systemctl stop hadoop
+sudo systemctl disable hadoop
+su hadoop 
+
+stop-dfs.sh
+stop-yarn.sh
+
+--------------------------------------------
+
+## Informações sobre o hadoop
+
+hdfs fsck / 
+
+-------------------------------------------
+
+## Acessar de outra máquina
+
+http://192.168.100.98:8042/node
+
+hdfs dfs -put arquivo destino
+
+hdfs dfs -cat  /user/hadoop/data/textfile/part-00000 | wc -l -> quatidade de linhas
+
+************************************
+
+## Observação: Quando ocorrer o erro 
+
+put: `/home/hadoop/mydata/hdfs': No such file or directory: `hdfs://localhost:9000/home/hadoop/mydata/hdfs'
+
+## Significa que não está sendo possivel encontrar o caminho do diretorio HDFS.
+## Atualmente não encontrei uma solução para o problema, entretanto em minhas pesquisas
+## É possivel contornar o erro ao acrescentar "file:///" antes do caminho.
+## Fazendo assim que seja possivel realizar a inserção dos dados no HDFS.
+## Um exemplo disso é:
+
+hdfs dfs -put despesas.csv file:///home/hadoop/mydata/hdfs

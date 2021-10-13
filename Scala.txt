@@ -1,0 +1,48 @@
+Scala
+
+#################
+
+Download via line command
+
+wget https://downloads.lightbend.com/scala/2.13.6/scala-2.13.6.tgz
+
+#################
+
+Descompactar
+
+tar -xvzf scala-2.11.8.tgz
+
+mover a pasta scala para a pasta Share
+
+sudo mv scala-2.13.6  /usr/local/share/
+
+################
+
+acessar o usuário hadoop
+
+su hadoop
+
+Criar as variaveis no arquivo bashrc
+
+nano ~/.bashrc
+
+export SCALA_HOME=/usr/local/share/scala-2.13.6
+export PATH=$PATH:$SCALA_HOME/bin
+
+Aplicar modificações
+
+source ~/.bashrc
+
+################
+
+Verificar a versão do Scala (confirmando se foi instalado)
+
+scala -version
+
+###############
+
+Depois de configurado, basta sair do usuário hadoop e executar 
+
+sudo apt-get install scala
+
+

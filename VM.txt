@@ -1,0 +1,51 @@
+##
+## É necessário ter instalado
+##
+
+
+# "Instalação do Python 3.8"
+sudo apt-get install python3.8 -y
+
+# 
+# "Instalação do pip8!"
+sudo apt-get install pip -y
+
+# -----------------------------------
+
+##
+## Venv
+##
+
+sudo apt-get install python3.8-venv
+
+# cria um ambiente virtual, isolando o local da maquina
+
+python3 -m venv nome 
+
+# executa a venv
+
+source nome/bin/activate
+
+# Desativa a VM
+
+deactivate
+
+# -----------------------------------
+
+##
+## virtualenv
+##
+
+sudo pip3 install virtualenv
+
+# Cria a VM
+
+virtualenv nome
+
+# Ativar vm 
+
+source teste/bin/activate
+
+# Desativa a VM
+
+deactivate
