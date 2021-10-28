@@ -1,0 +1,6 @@
+
+Extração
+
+tar -zxvf software.ver_7.0.tar.gz
+
+

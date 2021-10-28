@@ -1,0 +1,18 @@
+sudo grep -i postgresql /etc/apt/sources.list
+
+sudo -H gedit /etc/apt/sources.list
+
+deb https:// -> deb [arch=amd64] https://
+
+sudo apt --fix-broken install -> install dependencias não encontradas
+
+
+___________________
+
+grep -i repos.codelite.org /etc/apt/sources.list
+
+OR
+
+grep -i repos.codelite.org /etc/apt/sources.list.d/*.list
+
+sudo -H gedit /etc/apt/found_file_name.list

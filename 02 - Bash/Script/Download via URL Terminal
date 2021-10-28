@@ -1,0 +1,5 @@
+sudo apt install curl
+
+Fazer download de arquivo via url
+
+curl -O https://download.oracle.com/java/17/latest/jdk-17_linux-aarch64_bin.tar.gz

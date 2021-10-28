@@ -1,0 +1,8 @@
+ftp
+
+open ip porta
+
+user
+
+password
+

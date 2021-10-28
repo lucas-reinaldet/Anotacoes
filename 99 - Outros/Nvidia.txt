@@ -1,0 +1,10 @@
+
+sudo apt update && sudo apt upgrade
+
+ubuntu-drivers devices
+
+-- Instalar a versão recomendada
+
+sudo apt install nvidia-driver-X
+
+sudo reboot

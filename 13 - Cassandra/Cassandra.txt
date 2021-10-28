@@ -1,0 +1,822 @@
+Cassandra
+
+NTP????
+-----------------------
+
+Instalando o Java
+
+sudo apt update
+
+sudo apt install openjdk-8-jdk -y
+
+java -version; javac -version
+
+Achar a localização do JDK
+
+which javac
+
+readlink -f /usr/bin/javac
+
+vai resultar no caminho do java para aplicar a variavel
+
+(pegar apenas a pasta principal (antes de bin/javac)
+
+editar arquivo ~/.bashrc
+
+nano ~/.bashrc
+
+Acrescentar ao final do arquivo
+
+export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+
+
+----------------------------------------------
+
+Instalando o python 2.7
+
+sudo apt-get install python2.7 -y
+
+
+----------------------------------------------
+
+É interessante pelo ponto de vista de segurança a criação de um usuário especifico para
+cada serviço.
+
+----------------------------------------------
+Fazer Download
+
+wget https://dlcdn.apache.org/cassandra/3.11.11/apache-cassandra-3.11.11-bin.tar.gz
+
+Descompactar arquivo
+
+tar -xzf apache-cassandra-3.11.11-bin.tar.gz
+
+Criar diretorio cassandra em opt e mover o diretorio do apache para a pasta criada
+
+sudo mkdir /opt/cassandra && sudo mv apache-cassandra-3.11.11/ /opt/cassandra/
+
+Entrar na pasta cassandra no opt
+
+cd /opt/cassandra
+
+criar um link simbolico
+
+sudo ln -s /opt/cassandra/apache-cassandra-3.11.11 default
+
+----------------------------------------------
+
+Realizar a edição dos arquivo de configuração
+
+cassandra.yaml
+
+nano /opt/cassandra/default/conf/cassandra.yaml
+
+cluster_name: -> Nome do cluster
+
+listen_address: -> IP da máquina onde esta rodando o cassandra
+
+rpc_address: -> IP da Propria máquina
+
+seeds: -> Todos os IP's que tem o cassandra instalado (Tanto o ip local, quanto o ip das outras máquinas)
+
+----------------------------------------------
+
+Realizar a edição dos arquivo de configuração
+
+Configurando memória do Cassandra
+
+cassandra-env.sh
+
+nano /opt/cassandra/default/conf/cassandra-env.sh
+
+Observações:
+
+- Possui um script shell que identifica o sistema operacional, e faz um calculo para definir a
+quantidade de memoria que o Cassandra utilizará.
+
+- É possivel definir o maximo de memoria que pode ser consumidade atraves de
+uma variavel $MAX_HEAP_SIZE.
+
+- Em $JMS, se declarado o valor. O mesmo será alocado integralmente para o Cassandra,não podendo ser 
+utiizado por nenhum outro processo do sistema.
+
+- Caso a memoria declarada não tenha disponivel (em $JMX), o programa é abortado.
+
+- Se deixado para ser alocado de forma dinamica, é possivel ocorrer com que o mesmo seja instalado 
+inicialmente e do mesmo alocar boa parte da memoria ram, sem os outros ainda estiverem utilizando. 
+Possibilitando as outras ferramentas ficarem sem ram.
+
+- Sempre que um serviço cai ou possui uma baixa performace, é importante verificar se o 
+mesmo ocorreu devido a falta de memória ou a devido a configuração de baixo consumo de memoria.
+
+----------------------------------------
+
+Iniciar o cassandra
+
+sh /opt/cassandra/default/bin/cassandra -f
+
+Observação: O -f significa que será apresentado informações sobre o processo. Impedindo a utilização
+do console.
+
+Para parar o serviço, quando utilizado o -f, basta clicar o CTRL + C.
+
+Caso executado sem o -f
+
+kill `ps aux | grep 'cassandra' | awk '{print $2}'`
+
+----------------------------------------
+
+Verificar se o processo está sendo executado:
+
+ps aux | grep 'cassandra'
+
+----------------------------------------
+
+Acessar CQLSH
+
+Cria uma pasta em seu ambiente para armazenar estes Hacks ( Exercícios práticos de
+laboratórios ), os Hacks serão inicialmente usados e criados para a prática dos conhecimentos
+adquiridos no curso e posteriormente podem ser uma base de conhecimento para consulta.
+
+sh /opt/cassandra/default/bin/cqlsh
+
+ou para se conectar diretamente a uma keyspace
+
+sh /opt/cassandra/default/bin/cqlsh -k keyspace
+
+----------------------------------------
+
+Key Space -> Define o nivel de replicação do conteudo daquele espaço
+
+
+---------------------------------------
+
+Comandos
+
+Criar uma keySpace
+
+CREATE KEYSPACE killrvideo
+WITH REPLICATION = {
+ 'class': 'SimpleStrategy',
+ 'replication_factor' : 1
+};
+
+Usar a Keyspace
+
+USE killrvideo;
+
+
+Criar uma Tabela
+
+CREATE TABLE table1 (
+ column1 TEXT,
+ column2 TEXT,
+ column3 INT,
+ PRIMARY KEY (column1)
+);
+
+Criar uma tabela de usuários
+
+CREATE TABLE users (
+ user_id UUID,
+ first_name TEXT,
+ last_name TEXT,
+ PRIMARY KEY (user_id)
+);
+
+Inserindo valores
+
+INSERT INTO users (user_id, first_name, last_name)
+VALUES (uuid(), 'Joseph', 'Chu');
+
+INSERT INTO table1 (column1, column2, column3) VALUES ('Maria', 'maria', 30);
+
+INSERT INTO table1 (column1, column2, column3) VALUES ('Thiago', 'Thiago', 29);
+
+INSERT INTO table1 (column1, column2, column3) VALUES ('Mario', 'Marcio', 28);
+
+Consultas
+
+SELECT * FROM users;
+
+SELECT first_name, last_name FROM users;
+
+SELECT * FROM users WHERE user_id = 33f691b4-ce3a-4ef4-8930-1444f1041090;
+
+o comando COPY .
+Este comando permite importar e exportar dados do banco de dados cassandra
+
+importando dados do csv table1data.csv
+
+COPY table1 (column1, column2, column3) FROM 'table1data.csv';
+
+Importando com cabeçalho
+
+COPY table1 (column1, column2, column3) FROM 'table1data.csv'
+WITH HEADER=true;
+
+__________________________________
+
+Criando uma key Space
+
+CREATE KEYSPACE "HackCassandra" WITH replication = {'class': 'SimpleStrategy', 'replication_factor': 1 } ;
+
+Para usar o keyspace utilize:
+
+USE "HackCassandra";
+
+___________________________________
+
+CREATE TABLE daily_class (day text, time timestamp, student text,  PRIMARY KEY (day, time)) ;
+
+Observação: Em primary Key é definido os dados que poderão ser pesquisados (indexs)
+
+Quando possui uma chave composta, é necessário levar em consideração a ordenação
+das chaves; pois, quando realizado uma busca, é possivel fazer a busca da primeira
+chave sozinha, porem para buscar pela segunda key, é necessário especificar a primeira e
+a segunda. Se tem uma terceira, é necessário especificar a primeira, segunda e a terceira.
+
+Resumindo: A busca dos dados é realizado de forma ordenada (primary key) onde sempre será 
+necessário especificar as chaves anteriores (caso possua) para a realização de busca.
+
+Caso queira pesquisar algo que não esteja "mapeado" (o que não é recomendado)
+pode ser especificado: "Alls filter ..."
+
+Sempre que possuir um campo timestamp, será padronizado para o banco, o time zone global (000), 
+sendo necessário ter entre todas as máquinas a sincronização dos horarios (mesmo com o timezone 
+distinto de 000), pois quando realizado o cadastro, o proprio cassandra adapta para o time zone
+000.
+
+Exemplo:
+
+INSERT INTO daily_class (day, time, student) VALUES ('Monday', '2014-04-01 16:00+0000', 'Joaquim');
+
+Para consultar por time; será necessário especificar o horario equivalente local:
+
+select * from daily_class where day = 'Monday' and time = '2014-04-01 13:00:00.000000' ;
+
+***
+
+CREATE TABLE users ( user_id text PRIMARY KEY,  first_name text,  last_name text,  emails set<text>);
+
+Observação: Em email, é declarado o set<text> para indicar que esta coluna pode conter N 
+emails armazenados, já que o cassandra não é BD Relacional onde se resolveria de 1 - N registros.
+
+Quando se deseja cadastrar mais um e-mail, será necessário concatenar o registro da coluna com o 
+novo email.
+
+Exemplo:
+
+UPDATE users SET emails = emails + {'fb@friendsofmordor.org'} WHERE user_id = 'frodo';
+
+para excluir um determinado e-mail da lista, basta trocar o sinal de + para - .
+
+Exemplo:
+
+UPDATE users SET emails = emails - {'fb@friendsofmordor.org'} WHERE user_id = 'frodo';
+
+Para excluir todos os emails, basta colocar emails = {}
+
+Exemplo:
+
+UPDATE users SET emails = {} WHERE user_id = 'frodo';
+
+****
+
+É possivel realizar inserção de dados via formatação Json;, entretanto é necessário pesquisar
+como seria a inserção de uma lista de e-mails nesse caso.
+
+Exemplo:
+
+INSERT INTO users JSON '{"user_id": "nome", "first_name": "nome", "last_name": "nome"}';
+
+****
+
+A criação de tabelas repetidas com chaves distintas para consultas é normal, e existe um mecanismo
+do proprio cassandra que permite a inserção em todas essas tabelas dos dados de forma automatica.
+
+Batch Statements
+
+*****
+
+É possivel determinar um tempo que o registro ficará armazenado. Isso ocorre
+atraves do comando "USING TTL 20" localizado no final do insert.
+
+Exemplo:
+
+
+INSERT INTO
+    temperatura_atual(weatherstation_id,event_time,temperatura)
+VALUES 
+    ('1234ABCD','2013-04-03 07:04:00','74F') USING TTL 20;
+
+
+Observação:
+
+O "20" está mapeado em segundos, podendo ser alterado conforme a necessidade!
+___________________________________
+
+Partition key
+
+PRIMARY KEY ((weatherstation_id,date),event_time) 
+
+or 
+
+PRIMARY KEY (weatherstation_id,date,event_time) WITH CLUSTERING ORDER BY (event_time DESC) 
+
+Ambos são boas práticas, o primeiro comando, por default é ordem crescente;
+
+Já o segundo é possivel especificar;
+
+Possui uma chave de agrupamento, onde indica que o responsavel pela
+partição dos dados entre os cluster.
+
+Vale ressaltar que o que se encontra fora do parenteses interno, é um index, podendo
+ser usado para consultas.
+
+------------------------------------
+
+Cassandra-stress
+
+Utilitário de teste de carga
+
+Cria 1 Key Space com 3 Tabelas;
+
+sh /opt/cassandra/default/tools/bin/cassandra-stress
+
+É possivel parametrizar a simulação
+
+Apenas 1 comando por vez
+
+read
+write
+mixed
+counter_write
+counter_read
+user
+help
+print
+
+Exemplo:
+
+sh /opt/cassandra/default/tools/bin/cassandra-stress write n=1000000
+
+sh /opt/cassandra/default/tools/bin/cassandra-stress read n=40000
+
+sh /opt/cassandra/default/tools/bin/cassandra-stress mixed n=100000
+
+-----------------------------------------------------------------
+
+Atividade
+
+-- Criando KeySpace
+
+CREATE KEYSPACE Escola
+WITH REPLICATION = {
+ 'class': 'SimpleStrategy',
+ 'replication_factor' : 1
+};
+
+-- Acessando KeySpace
+
+use Escola 
+
+-- Criando Tabela 
+
+CREATE TABLE aluno (
+    al_id UUID,
+    al_nome TEXT,
+    al_materia SET<TEXT>,
+    al_nota SET<FLOAT>,
+    al_falta SET<INT>,
+    al_emails SET<TEXT>,
+    PRIMARY KEY (al_nome)
+);
+
+CREATE TABLE aluno_materia (
+    am_id UUID,
+    am_nome TEXT,
+    am_materia TEXT,
+    am_nota FLOAT,
+    am_falta INT,
+    am_emails SET<TEXT>,
+    PRIMARY KEY (am_materia, am_nome)
+);
+
+-- Inserindo registros
+
+BEGIN BATCH
+    INSERT INTO aluno 
+            (al_id, al_nome, al_materia, al_nota, al_falta, al_emails)
+    VALUES
+            (   now(),
+                'Lucas',
+                {       'Matematica', 
+                        'Português', 
+                        'História', 
+                        'Sociologia', 
+                        'Filosofia'
+                },
+                {       8.9, 
+                        7.6, 
+                        6.8, 
+                        9.65, 
+                        10
+                },
+                {       10, 
+                        4, 
+                        15, 
+                        7, 
+                        0
+                },
+                {       'Lucas@lucas.com',  
+                        'lucas@lucas.com.br'
+                }
+            );
+
+    INSERT INTO aluno_materia 
+            (am_id, am_nome, am_materia, am_nota, am_falta, am_emails)
+    VALUES
+            (now(), 'Lucas', 'Matematica', 8.9, 10, {'Lucas@lucas.com', 'lucas@lucas.com.br'});
+
+    INSERT INTO aluno_materia 
+            (am_id, am_nome, am_materia, am_nota, am_falta, am_emails)
+    VALUES
+            (now(), 'Lucas', 'Português', 7.6, 4, {'Lucas@lucas.com', 'lucas@lucas.com.br'});            
+
+    INSERT INTO aluno_materia 
+            (am_id, am_nome, am_materia, am_nota, am_falta, am_emails)
+    VALUES
+            (now(), 'Lucas', 'História', 6.8, 15, {'Lucas@lucas.com', 'lucas@lucas.com.br'});  
+
+    INSERT INTO aluno_materia 
+            (am_id, am_nome, am_materia, am_nota, am_falta, am_emails)
+    VALUES
+            (now(), 'Lucas', 'Sociologia', 9.65, 7, {'Lucas@lucas.com', 'lucas@lucas.com.br'});  
+
+    INSERT INTO aluno_materia 
+            (am_id, am_nome, am_materia, am_nota, am_falta, am_emails)
+    VALUES
+            (now(), 'Lucas', 'Filosofia', 10, 0, {'Lucas@lucas.com', 'lucas@lucas.com.br'});              
+        
+APPLY BATCH;
+
+BEGIN BATCH
+    INSERT INTO aluno 
+            (al_id, al_nome, al_materia, al_nota, al_falta, al_emails)
+    VALUES
+            (   now(),
+                'Larissa',
+                {       'Matematica', 
+                        'Português', 
+                        'História', 
+                        'Sociologia', 
+                        'Filosofia'
+                },
+                {       8.9, 
+                        7.6, 
+                        6.8, 
+                        9.65, 
+                        10
+                },
+                {       10, 
+                        4, 
+                        15, 
+                        7, 
+                        0
+                },
+                {       'Larissa@Larissa.com',  
+                        'Larissa@Larissa.com.br'
+                }
+            );
+
+    INSERT INTO aluno_materia 
+            (am_id, am_nome, am_materia, am_nota, am_falta, am_emails)
+    VALUES
+            (now(), 'Larissa', 'Matematica', 8.9, 10, {'Larissa@Larissa.com', 'Larissa@Larissa.com.br'});
+
+    INSERT INTO aluno_materia 
+            (am_id, am_nome, am_materia, am_nota, am_falta, am_emails)
+    VALUES
+            (now(), 'Larissa', 'Português', 7.6, 4, {'Larissa@Larissa.com', 'Larissa@Larissa.com.br'});            
+
+    INSERT INTO aluno_materia 
+            (am_id, am_nome, am_materia, am_nota, am_falta, am_emails)
+    VALUES
+            (now(), 'Larissa', 'História', 6.8, 15, {'Larissa@Larissa.com', 'Larissa@Larissa.com.br'});  
+
+    INSERT INTO aluno_materia 
+            (am_id, am_nome, am_materia, am_nota, am_falta, am_emails)
+    VALUES
+            (now(), 'Larissa', 'Sociologia', 9.65, 7, {'Larissa@Larissa.com', 'Larissa@Larissa.com.br'});  
+
+    INSERT INTO aluno_materia 
+            (am_id, am_nome, am_materia, am_nota, am_falta, am_emails)
+    VALUES
+            (now(), 'Larissa', 'Filosofia', 10, 0, {'Larissa@Larissa.com', 'Larissa@Larissa.com.br'});              
+        
+APPLY BATCH;
+
+BEGIN BATCH
+    INSERT INTO aluno 
+            (al_id, al_nome, al_materia, al_nota, al_falta, al_emails)
+    VALUES
+            (   now(),
+                'Valeria',
+                {       'Matematica', 
+                        'Português', 
+                        'História', 
+                        'Sociologia', 
+                        'Filosofia'
+                },
+                {       8.9, 
+                        7.6, 
+                        6.8, 
+                        9.65, 
+                        10
+                },
+                {       10, 
+                        4, 
+                        15, 
+                        7, 
+                        0
+                },
+                {       'Valeria@Valeria.com',  
+                        'Valeria@Valeria.com.br'
+                }
+            );
+
+    INSERT INTO aluno_materia 
+            (am_id, am_nome, am_materia, am_nota, am_falta, am_emails)
+    VALUES
+            (now(), 'Valeria', 'Matematica', 8.9, 10, {'Valeria@Valeria.com', 'Valeria@Valeria.com.br'});
+
+    INSERT INTO aluno_materia 
+            (am_id, am_nome, am_materia, am_nota, am_falta, am_emails)
+    VALUES
+            (now(), 'Valeria', 'Português', 7.6, 4, {'Valeria@Valeria.com', 'Valeria@Valeria.com.br'});            
+
+    INSERT INTO aluno_materia 
+            (am_id, am_nome, am_materia, am_nota, am_falta, am_emails)
+    VALUES
+            (now(), 'Valeria', 'História', 6.8, 15, {'Valeria@Valeria.com', 'Valeria@Valeria.com.br'});  
+
+    INSERT INTO aluno_materia 
+            (am_id, am_nome, am_materia, am_nota, am_falta, am_emails)
+    VALUES
+            (now(), 'Valeria', 'Sociologia', 9.65, 7, {'Valeria@Valeria.com', 'Valeria@Valeria.com.br'});  
+
+    INSERT INTO aluno_materia 
+            (am_id, am_nome, am_materia, am_nota, am_falta, am_emails)
+    VALUES
+            (now(), 'Valeria', 'Filosofia', 10, 0, {'Valeria@Valeria.com', 'Valeria@Valeria.com.br'});              
+        
+APPLY BATCH;
+
+BEGIN BATCH
+    INSERT INTO aluno 
+            (al_id, al_nome, al_materia, al_nota, al_falta, al_emails)
+    VALUES
+            (   now(),
+                'Jullian',
+                {       'Matematica', 
+                        'Português', 
+                        'História', 
+                        'Sociologia', 
+                        'Filosofia'
+                },
+                {       8.9, 
+                        7.6, 
+                        6.8, 
+                        9.65, 
+                        10
+                },
+                {       10, 
+                        4, 
+                        15, 
+                        7, 
+                        0
+                },
+                {       'Jullian@Jullian.com',  
+                        'Jullian@Jullian.com.br'
+                }
+            );
+
+    INSERT INTO aluno_materia 
+            (am_id, am_nome, am_materia, am_nota, am_falta, am_emails)
+    VALUES
+            (now(), 'Jullian', 'Matematica', 8.9, 10, {'Jullian@Jullian.com', 'Jullian@Jullian.com.br'});
+
+    INSERT INTO aluno_materia 
+            (am_id, am_nome, am_materia, am_nota, am_falta, am_emails)
+    VALUES
+            (now(), 'Jullian', 'Português', 7.6, 4, {'Jullian@Jullian.com', 'Jullian@Jullian.com.br'});            
+
+    INSERT INTO aluno_materia 
+            (am_id, am_nome, am_materia, am_nota, am_falta, am_emails)
+    VALUES
+            (now(), 'Jullian', 'História', 6.8, 15, {'Jullian@Jullian.com', 'Jullian@Jullian.com.br'});  
+
+    INSERT INTO aluno_materia 
+            (am_id, am_nome, am_materia, am_nota, am_falta, am_emails)
+    VALUES
+            (now(), 'Jullian', 'Sociologia', 9.65, 7, {'Jullian@Jullian.com', 'Jullian@Jullian.com.br'});  
+
+    INSERT INTO aluno_materia 
+            (am_id, am_nome, am_materia, am_nota, am_falta, am_emails)
+    VALUES
+            (now(), 'Jullian', 'Filosofia', 10, 0, {'Jullian@Jullian.com', 'Jullian@Jullian.com.br'});              
+        
+APPLY BATCH;
+
+BEGIN BATCH
+    INSERT INTO aluno 
+            (al_id, al_nome, al_materia, al_nota, al_falta, al_emails)
+    VALUES
+            (   now(),
+                'Carlesso',
+                {       'Matematica', 
+                        'Português', 
+                        'História', 
+                        'Sociologia', 
+                        'Filosofia'
+                },
+                {       8.9, 
+                        7.6, 
+                        6.8, 
+                        9.65, 
+                        10
+                },
+                {       10, 
+                        4, 
+                        15, 
+                        7, 
+                        0
+                },
+                {       'Carlesso@Carlesso.com',  
+                        'Carlesso@Carlesso.com.br'
+                }
+            );
+
+    INSERT INTO aluno_materia 
+            (am_id, am_nome, am_materia, am_nota, am_falta, am_emails)
+    VALUES
+            (now(), 'Carlesso', 'Matematica', 8.9, 10, {'Carlesso@Carlesso.com', 'Carlesso@Carlesso.com.br'});
+
+    INSERT INTO aluno_materia 
+            (am_id, am_nome, am_materia, am_nota, am_falta, am_emails)
+    VALUES
+            (now(), 'Carlesso', 'Português', 7.6, 4, {'Carlesso@Carlesso.com', 'Carlesso@Carlesso.com.br'});            
+
+    INSERT INTO aluno_materia 
+            (am_id, am_nome, am_materia, am_nota, am_falta, am_emails)
+    VALUES
+            (now(), 'Carlesso', 'História', 6.8, 15, {'Carlesso@Carlesso.com', 'Carlesso@Carlesso.com.br'});  
+
+    INSERT INTO aluno_materia 
+            (am_id, am_nome, am_materia, am_nota, am_falta, am_emails)
+    VALUES
+            (now(), 'Carlesso', 'Sociologia', 9.65, 7, {'Carlesso@Carlesso.com', 'Carlesso@Carlesso.com.br'});  
+
+    INSERT INTO aluno_materia 
+            (am_id, am_nome, am_materia, am_nota, am_falta, am_emails)
+    VALUES
+            (now(), 'Carlesso', 'Filosofia', 10, 0, {'Carlesso@Carlesso.com', 'Carlesso@Carlesso.com.br'});              
+        
+APPLY BATCH;
+
+-- Update no aluno Lucas, cadastrando e-mails
+
+BEGIN BATCH
+
+    UPDATE aluno SET 
+        al_emails = al_emails + {'lucas@gmail.com', 'lucas@hotmail.com.br'}
+    WHERE 
+        al_nome = 'Lucas';
+
+    UPDATE aluno_materia SET 
+        am_emails = am_emails + {'lucas@gmail.com', 'lucas@hotmail.com.br'}
+    WHERE 
+        am_materia = 'Filosofia' AND am_nome = 'Lucas';
+
+    UPDATE aluno_materia SET 
+        am_emails = am_emails + {'lucas@gmail.com', 'lucas@hotmail.com.br'}
+    WHERE 
+        am_materia = 'História' AND am_nome = 'Lucas';
+
+    UPDATE aluno_materia SET 
+        am_emails = am_emails + {'lucas@gmail.com', 'lucas@hotmail.com.br'}
+    WHERE 
+        am_materia = 'Matematica' AND am_nome = 'Lucas';
+
+    UPDATE aluno_materia SET 
+        am_emails = am_emails + {'lucas@gmail.com', 'lucas@hotmail.com.br'}
+    WHERE 
+        am_materia = 'Português' AND am_nome = 'Lucas';
+
+    UPDATE aluno_materia SET 
+        am_emails = am_emails + {'lucas@gmail.com', 'lucas@hotmail.com.br'}
+    WHERE 
+        am_materia = 'Sociologia' AND am_nome = 'Lucas';
+
+APPLY BATCH;
+
+-- Update no aluno Lucas, retirando e-mails
+
+BEGIN BATCH
+
+    UPDATE aluno SET 
+        al_emails = al_emails - {'Lucas@lucas.com', 'lucas@lucas.com.br'}
+    WHERE 
+        al_nome = 'Lucas';
+
+    UPDATE aluno_materia SET 
+        am_emails = am_emails - {'Lucas@lucas.com', 'lucas@lucas.com.br'}
+    WHERE 
+        am_materia = 'Filosofia' AND am_nome = 'Lucas';
+
+    UPDATE aluno_materia SET 
+        am_emails = am_emails - {'Lucas@lucas.com', 'lucas@lucas.com.br'}
+    WHERE 
+        am_materia = 'História' AND am_nome = 'Lucas';
+
+    UPDATE aluno_materia SET 
+        am_emails = am_emails - {'Lucas@lucas.com', 'lucas@lucas.com.br'}
+    WHERE 
+        am_materia = 'Matematica' AND am_nome = 'Lucas';
+
+    UPDATE aluno_materia SET 
+        am_emails = am_emails - {'Lucas@lucas.com', 'lucas@lucas.com.br'}
+    WHERE 
+        am_materia = 'Português' AND am_nome = 'Lucas';
+
+    UPDATE aluno_materia SET 
+        am_emails = am_emails - {'Lucas@lucas.com', 'lucas@lucas.com.br'}
+    WHERE 
+        am_materia = 'Sociologia' AND am_nome = 'Lucas';
+
+APPLY BATCH;
+
+-- Inserção com  tempo de expiração (TTL = 3600)
+
+BEGIN BATCH
+    INSERT INTO aluno 
+            (al_id, al_nome, al_materia, al_nota, al_falta, al_emails)
+    VALUES
+            (   now(),
+                'Felipe',
+                {       'Matematica', 
+                        'Português', 
+                        'História', 
+                        'Sociologia', 
+                        'Filosofia'
+                },
+                {       6.9, 
+                        3.6, 
+                        9.8, 
+                        9.0, 
+                        9.89
+                },
+                {       2, 
+                        9, 
+                        20, 
+                        12, 
+                        3
+                },
+                {       'Felipe@Felipe.com',  
+                        'Felipe@Felipe.com.br'
+                }
+            ) 
+    USING TTL 3600;
+
+    INSERT INTO aluno_materia 
+            (am_id, am_nome, am_materia, am_nota, am_falta, am_emails)
+    VALUES
+            (now(), 'Felipe', 'Matematica', 6.9, 10, {'Felipe@Felipe.com', 'Felipe@Felipe.com.br'}) 
+    USING TTL 3600;
+
+    INSERT INTO aluno_materia 
+            (am_id, am_nome, am_materia, am_nota, am_falta, am_emails)
+    VALUES
+            (now(), 'Felipe', 'Português', 3.6, 4, {'Felipe@Felipe.com', 'Felipe@Felipe.com.br'}) 
+    USING TTL 3600;            
+
+    INSERT INTO aluno_materia 
+            (am_id, am_nome, am_materia, am_nota, am_falta, am_emails)
+    VALUES
+            (now(), 'Felipe', 'História', 9.8, 15, {'Felipe@Felipe.com', 'Felipe@Felipe.com.br'})  
+    USING TTL 3600;
+
+    INSERT INTO aluno_materia 
+            (am_id, am_nome, am_materia, am_nota, am_falta, am_emails)
+    VALUES
+            (now(), 'Felipe', 'Sociologia', 9.0, 7, {'Felipe@Felipe.com', 'Felipe@Felipe.com.br'})
+    USING TTL 3600;  
+
+    INSERT INTO aluno_materia 
+            (am_id, am_nome, am_materia, am_nota, am_falta, am_emails)
+    VALUES
+            (now(), 'Felipe', 'Filosofia', 9.89, 0, {'Felipe@Felipe.com', 'Felipe@Felipe.com.br'})
+    USING TTL 3600;              
+        
+APPLY BATCH; 
