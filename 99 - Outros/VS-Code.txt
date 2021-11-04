@@ -10,3 +10,4 @@ Extensões Úteis
 
 5 - yaml
 
+6 - Python
