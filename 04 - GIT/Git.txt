@@ -1,6 +1,10 @@
 # Links: https://www.hostinger.com.br/tutoriais/comandos-basicos-de-git?ppc_campaign=google_performance_max&gclid=CjwKCAjwhOyJBhA4EiwAEcJdcY22hcpi5SHU3Mlq_3rtH7H9JMSpphFAwXYw4qZOMRYkdofjpzr76BoCEoUQAvD_BwE
 # Link: https://git-scm.com/book/en/v2/Git-Basics-Working-with-Remotes
 
+# Instala o GIT
+
+sudo apt-get install git -y
+
 # ________________________________
 
 # Tranforma seu projeto em um repositorio:
