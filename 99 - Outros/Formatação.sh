@@ -4,9 +4,17 @@ sudo apt update && sudo apt upgrade
 
 ubuntu-drivers devices
 
+# se for trabalhar com IA usar a 450
 sudo apt install nvidia-driver-X
 
 sudo reboot
+
+# Net Tools
+
+sudo apt install net-tools
+
+# vlc
+sudo snap install vlc
 
 # Anaconda
 

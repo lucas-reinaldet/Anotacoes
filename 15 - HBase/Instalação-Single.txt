@@ -1,0 +1,55 @@
+## realizando o download do Hbase
+
+su hadoop
+cd /home/hadoop
+wget https://dlcdn.apache.org/hbase/2.4.8/hbase-2.4.8-bin.tar.gz
+
+# Descompactando e adicionando a /usr/local
+
+tar -xvf hbase-2.4.8-bin.tar.gz
+
+# Configurar JAVA_HOME
+
+# logo apos a variavel JAVA_HOME comentada adicionar as linhas abaixo.
+
+# Necessário verificar o caminho do JAVA_HOME
+
+echo $JAVA_HOME
+
+nano hbase-2.4.8/conf/hbase-env.sh
+
+export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+export HBASE_REGIONSERVER=/home/hadoop/hbase-2.4.8/conf/regionservers
+export HBASE_MANAGES_ZK=true
+
+## Configurando variaveis de Ambiente
+
+# confirmando se hadoop configurado
+echo $HADOOP_INSTALL
+
+nano ~/.bashrc
+
+# Adicionar ao fim do arquivo
+
+export HBASE_HOME=/home/hadoop/hbase-2.4.8
+export PATH=$PATH:$HBASE_HOME/bin
+
+source ~/.bashrc
+
+## inicie o Hbase
+
+# Verifique se o HDFS está ativo
+
+jps
+
+# Caso não esteja ative-o
+
+start-dfs.sh
+
+# Inicie o HBASE
+
+start-hbase.sh
+
+## Iniciando o Hbase Shell
+
+hbase shell

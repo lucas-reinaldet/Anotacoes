@@ -1,5 +1,5 @@
  # "Atualização do repositório do Postgresql"
-sudo sh -c '# deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" >> /etc/apt/sources.list.d/pgdg.list'
+sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
 wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
 
 # "Atualizando o repositório do PostGis"
@@ -12,26 +12,26 @@ sudo apt-get update -y
 # "Pacotes que serão instalados:"
 # "build-essential"
 sudo apt-get install build-essential -y
- 
+
 # "Instalação do libreadline-dev"
 sudo apt-get install libreadline-dev -y
- 
+
 # "Instalação do zlib1g-dev"
 sudo apt-get install zlib1g-dev -y
- 
+
 # "Instalação do gettext"
 sudo apt-get install gettext -y
- 
+
 # "Instalação do Postgresql versão 13 & Postgres Common"
 sudo apt-get -y install postgresql-13 -y
 sudo apt-get install -y postgresql-common -y
- 
+
 # "Instalação do PostGis para o Postgresql de versão 13 | Parte 01"
 sudo apt-get install postgresql-13-postgis-3 -y
- 
+
 # "Instalação do PostGis para o Postgresql de versão 13 | Parte 02"
 sudo apt-get install postgresql-13-postgis-3-scripts -y
- 
+
 # "Instalação do PostGis para o Postgresql de versão 13 | Parte 03"
 sudo apt-get install postgis -y
 

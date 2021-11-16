@@ -1,0 +1,6 @@
+Apos a instalação do windows e do Linux, no sistema windows deve-se executar o 
+CMD como administrador e executar o seguinte comando:
+
+bcdedit /set {bootmgr} path \EFI\ubuntu\grubx64.efi
+
+apos isto, basta reiniciar o computador

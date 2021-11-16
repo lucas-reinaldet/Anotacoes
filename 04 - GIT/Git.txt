@@ -84,13 +84,13 @@ git checkout nome_branch
 # Clonar repositorio
 
 
-git clone https://git.pti.org.br/celtab/mi-extrator-api-backend.git
+git clone https://git.<...>
 
 # Observação: Irá clonar o repositorio padrão (normalmente o "master")
 
 # Clonar repositorio com um Branch especifico
 
-git clone https://git.pti.org.br/celtab/mi-extrator-api-backend.git --branch nome_branch nome_pasta
+git clone https://git.<...> --branch nome_branch nome_pasta
 
 # Observação: É possivel já definir o nome da pasta onde o projeto estará;
 # caso não especificado, ele será definido como nomenclatura o nome do branch ou do repositório

@@ -1,0 +1,42 @@
+# Cria Tabela
+create 'tabela', 'family collumn'
+
+#cria Space
+create_namespace 'nome'
+
+# ou 
+# Necessário especificar o namespace onde a tabela será criada
+# caso contrario será criada em "DEAFULT"
+
+create 'escola:testeescola', 'cf1', 'dados'
+
+# Desabilitar uma tabela
+
+diasble 'tabela'
+
+# Excluir uma tabela
+# Obs: Para excluir uma tabela, é necessária a 
+# mesma estar desabilitada.
+# basicamente pq pode estar ocorrendo 
+# uma ação no momento da exclusão. 
+
+drop 'tabela'
+
+# Troca de space
+# default -> é o padrão
+alter_namespace 'escola' 
+
+# Excluir um namespace
+
+drop_namespace 'nome'
+
+# Adicionar registro
+
+put 'aluno', '0002', 'dados:name', 'lucas ...'
+
+put 'aluno', '0002', 'dados:cpf', '1111111'
+
+# excluir registro
+
+delete 'tabela', 'chave  da familycolumn', 'dado que quer excluir'
+

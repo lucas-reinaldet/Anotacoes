@@ -1,0 +1,11 @@
+sudo docker image pull postgres:13
+
+# Criar um container dando nomenclatura baseado em uma image e ativar 
+# o shell do cantainer
+sudo docker run --name nome_container --rm -i -t image:tag sh
+
+# Criar um container e setando um volume para ele atraves da opcao -v
+docker run -v "/var/www" --name nome_container -d -e [opcoes image] postgres:13
+
+# Habilitar o modo shell do container já em execução
+docker exec -it nome_container sh

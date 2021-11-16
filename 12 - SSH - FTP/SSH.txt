@@ -1,3 +1,7 @@
+https://www.hostinger.com.br/tutoriais/como-usar-sftp-ssh-file-transfer-protocol
+
+----------------------------------
+
 sudo apt-get install openssh-server
 
 sudo service ssh start
@@ -7,7 +11,6 @@ sudo service ssh stop
 porta padrão é 22
 
 ssh nomeusuario@ip-da-maquina -p numeroporta
-
 
 Mudar porta ssh:
 
@@ -53,4 +56,3 @@ a letra l antes do comando, mostra a resposta do comando referente ao ambiente l
 
 o comando sem o l é referente a maquina remota conectada
 
-https://www.hostinger.com.br/tutoriais/como-usar-sftp-ssh-file-transfer-protocol

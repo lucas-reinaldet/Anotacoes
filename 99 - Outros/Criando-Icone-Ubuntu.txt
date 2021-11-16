@@ -1,0 +1,14 @@
+Criando icone
+
+sudo ln -s /opt/eclipse/eclipse /usr/bin/eclipse
+
+cd /usr/share/applications/
+
+sudo gedit eclipse.desktop
+
+[Desktop Entry]
+Type=Application
+Name=Eclipse
+Comment=Eclipse Java
+Icon=/opt/eclipse/icon.xpm
+Exec=eclipse (Ou caminho do arquivo)

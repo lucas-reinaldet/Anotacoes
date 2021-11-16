@@ -1,293 +1,293 @@
 ## Instalação Docker
 
-	## Certifique-se de que não existe nenhuma versão antiga instalada removendo-a
+## Certifique-se de que não existe nenhuma versão antiga instalada removendo-a
 
-	sudo apt-get remove docker docker-engine docker.io containerd runc
+sudo apt-get remove docker docker-engine docker.io containerd runc
 
-	## Atualize o repositório
+## Atualize o repositório
 
-	sudo apt-get update
+sudo apt-get update
 
-	## Instale pacotes necessários
+## Instale pacotes necessários
 
-	sudo apt-get install apt-transport-https ca-certificates curl gnupg-agent software-properties-common -y
+sudo apt-get install apt-transport-https ca-certificates curl gnupg-agent software-properties-common -y
 
-	## Adicione a chave oficial do Docker
+## Adicione a chave oficial do Docker
 
-	curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 
-	## Verifique se a chave foi adicionada
+## Verifique se a chave foi adicionada
 
-	sudo apt-key fingerprint 0EBFCD88
+sudo apt-key fingerprint 0EBFCD88
 
-	## Adicione o repositório do Docker
+## Adicione o repositório do Docker
 
-	sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
 
-	## Instale o Docker
+## Instale o Docker
 
-	sudo apt-get install docker-ce docker-ce-cli containerd.io -y
+sudo apt-get install docker-ce docker-ce-cli containerd.io -y
 
-	## Verifique se o Docker foi corretamente instalado executando no terminal
+## Verifique se o Docker foi corretamente instalado executando no terminal
 
-	docker version
+docker version
 
-	## Vamos criar e adicionar um usuário ao grupo do docker
-		
-	## Criando um usuário
+## Vamos criar e adicionar um usuário ao grupo do docker
+	
+## Criando um usuário
 
-	sudo addgroup us_docker
+sudo addgroup us_docker
 
-	sudo adduser --ingroup docker us_docker
+sudo adduser --ingroup docker us_docker
 
-	su us_docker
+su us_docker
 
-	newgrp docker
+newgrp docker
 
-	OBS: Por quê fizemos isso?
+OBS: Por quê fizemos isso?
 
-	Fizemos isso porque caso contrário só poderíamos executar o docker como superusuário, sudo ou root.
+Fizemos isso porque caso contrário só poderíamos executar o docker como superusuário, sudo ou root.
 
-	Não queremos isso. Queremos que nosso usuário comum possa executar o Docker. 
+Não queremos isso. Queremos que nosso usuário comum possa executar o Docker. 
 
-	Por isso adicionamos nosso usuário ao grupo docker.
+Por isso adicionamos nosso usuário ao grupo docker.
 
-	Quando o docker é executado, ele procura por um grupo com seu nome no sistema e dá permissão de uso aos
-	usuários que fazem parte deste grupo.
+Quando o docker é executado, ele procura por um grupo com seu nome no sistema e dá permissão de uso aos
+usuários que fazem parte deste grupo.
 
-	OBS: O quarto comando é 'uma gambiarra' que adiciona o nosso usuário a um grupo 'virtual' que demos
-	o nome de docker para evitar que tenhamos que reiniciar o computador.
+OBS: O quarto comando é 'uma gambiarra' que adiciona o nosso usuário a um grupo 'virtual' que demos
+o nome de docker para evitar que tenhamos que reiniciar o computador.
 
 
-	## Testar a instalação executando o Hello World no terminal
+## Testar a instalação executando o Hello World no terminal
 
-	docker run hello-world
+docker run hello-world
 
 ## Informações
 
-	# A linguagem Yaml faz parte do core do Docker
+# A linguagem Yaml faz parte do core do Docker
 
-	## Imagens Docker
-	# Quando falamos de containers, imagens são "Templates" ou "Modelos" 
-	# no qual usamos para criar containers
+## Imagens Docker
+# Quando falamos de containers, imagens são "Templates" ou "Modelos" 
+# no qual usamos para criar containers
 
-	# Quando é pedido para criar um container a partir de uma imagem
-	# O mesmo busca de forma local essa imagem, caso não se encontre
-	# o mesmo é buscado em "https://hub.docker.com"
-	# apos realizado a busca e o download, a mesma é armazenada de forma
-	# local, não sendo necessário a sua busca e o download posteriormente
+# Quando é pedido para criar um container a partir de uma imagem
+# O mesmo busca de forma local essa imagem, caso não se encontre
+# o mesmo é buscado em "https://hub.docker.com"
+# apos realizado a busca e o download, a mesma é armazenada de forma
+# local, não sendo necessário a sua busca e o download posteriormente
 
-	# No site mencionado acima, possui diversas imagens de containers disponiveis
-	# para download. É possivel também realizar a publicação de imagens por parte do
-	# desenvolvedor
+# No site mencionado acima, possui diversas imagens de containers disponiveis
+# para download. É possivel também realizar a publicação de imagens por parte do
+# desenvolvedor
 
-	# As imagens são criadas a partir de um arquivo dockerfile.
+# As imagens são criadas a partir de um arquivo dockerfile.
 
-	## Sistema de Arquivos em Camadas ( filesystem )
+## Sistema de Arquivos em Camadas ( filesystem )
 
-	# O sistema de arquivos do dockers é chamado de "Layered" 
-	# (Sistemas de arquivos em camadas)
+# O sistema de arquivos do dockers é chamado de "Layered" 
+# (Sistemas de arquivos em camadas)
 
-	# Sistema de arquivos comuns (Linux / Unix) Possui basicamente duas camadas:
+# Sistema de arquivos comuns (Linux / Unix) Possui basicamente duas camadas:
 
-	#	bootfs: Onde fica o sistema de boot do sistema operacional e o Kernel
+#	bootfs: Onde fica o sistema de boot do sistema operacional e o Kernel
 
-	#	rootfs: Sistema de arquivos do sistema operacional (SO), incluindo arquitetura de
-	#			diretórios como /dev, /proc, /bin, /etc, /lib, /usr e /tmp
-	#			assim como os arquivos de configuração e binários do SO.
-	#			Sempre que iniciado o SO, essa camada em modo de leitura, e verificado
-	#			sua integridade, e em seguida o mesmo é montado e disponibilizado em 
-	# 			modo de leitura e escrita, disponibilizando-o para o usuário e aplicações.
+#	rootfs: Sistema de arquivos do sistema operacional (SO), incluindo arquitetura de
+#			diretórios como /dev, /proc, /bin, /etc, /lib, /usr e /tmp
+#			assim como os arquivos de configuração e binários do SO.
+#			Sempre que iniciado o SO, essa camada em modo de leitura, e verificado
+#			sua integridade, e em seguida o mesmo é montado e disponibilizado em 
+# 			modo de leitura e escrita, disponibilizando-o para o usuário e aplicações.
 
 
-	# O sistema de arquivos no Docker, tem-se a mesma arquitetura, entretanto com alguns
-	# diferenciais:
-	# A camada de escrita que o processo/aplicação visualiza, não é o mesmo rootfs base
-	# do sistema, mas sim uma camada de abstração do rootfs.
-	# Fazendo com que o container torna-se portatil, pois as modificações realizadas
-	# não são aplicadas ao sistema de origem do container e sim na camada no qual O
-	# sistema o visualiza.
+# O sistema de arquivos no Docker, tem-se a mesma arquitetura, entretanto com alguns
+# diferenciais:
+# A camada de escrita que o processo/aplicação visualiza, não é o mesmo rootfs base
+# do sistema, mas sim uma camada de abstração do rootfs.
+# Fazendo com que o container torna-se portatil, pois as modificações realizadas
+# não são aplicadas ao sistema de origem do container e sim na camada no qual O
+# sistema o visualiza.
 
-	# O rootfs é isolado por camadas, onde o que deve ser compartilhado entre o host
-	# e o container é compartilhado via AUFS (https://en.wikipedia.org/wiki/Aufs), que monta
-	# uma camada de leitura e escrita em cima do sistema de arquivos que é somente leitura.
-	# Garantindo assim, que qualquer modificação feita no container, não seja aplicado ou que
-	# afete o sistema de arquivos do host.
+# O rootfs é isolado por camadas, onde o que deve ser compartilhado entre o host
+# e o container é compartilhado via AUFS (https://en.wikipedia.org/wiki/Aufs), que monta
+# uma camada de leitura e escrita em cima do sistema de arquivos que é somente leitura.
+# Garantindo assim, que qualquer modificação feita no container, não seja aplicado ou que
+# afete o sistema de arquivos do host.
 
-	# Observação: A cada modificação, é criado novas camadas. Por isso é considerado um
-	# Filesystem em Camadas.
+# Observação: A cada modificação, é criado novas camadas. Por isso é considerado um
+# Filesystem em Camadas.
 
-	## Imagens de Sistemas Operacionais
+## Imagens de Sistemas Operacionais
 
-	# Ao utilizar uma image de um sistema operacional, exemplo ubuntu
-	# Criará um container que conterá as configurações basicas 
-	# do sistema operacional.
+# Ao utilizar uma image de um sistema operacional, exemplo ubuntu
+# Criará um container que conterá as configurações basicas 
+# do sistema operacional.
 
-	# containers que não sejam de serviço, serão executados e finalizado
+# containers que não sejam de serviço, serão executados e finalizado
 
-	## Alpine
+## Alpine
 
-	# A imagem fica muito mais enxuta, tendo imagens menores e mais faceis de configurar.
-	# Utiliza como comando principal de instalação o APK, enquanto debiam e ubuntu
-	# utiliza o apt.
+# A imagem fica muito mais enxuta, tendo imagens menores e mais faceis de configurar.
+# Utiliza como comando principal de instalação o APK, enquanto debiam e ubuntu
+# utiliza o apt.
 
-	## Acessando portas de Containers
+## Acessando portas de Containers
 
-	# As portas dos containers não são localizadas atraves do localhost
-	# sendo necessário o "espelhamento" desta porta localmente.
-	# Ao iniciarmos o serviço "nginx" através do comando:
-	
-	docker run -d -e NGINX_ENTRYPOINT_QUITE_LOGS=1 nginx:1.19.4-alpine
-	
-	# O mesmo poderá ser acessado via porta 80 do docker, porém não acessivel
-	# via localhost. Desta maneira, é necessário indicar qual porta local
-	# servirá de acesso a porta do docker. No proximo comando será indicado como
-	# porta de acesso, a porta de número 8080:
-	
-	docker run -d -p 8080:80 nginx:1.19.4-alpine
-	
-	# Desta maneira, o serviço pode ser acessado via url: 
-	# localhost:8080 ou 0.0.0.0:8080 ou 127.0.0.1:8080 ou ip_maquina:8080
+# As portas dos containers não são localizadas atraves do localhost
+# sendo necessário o "espelhamento" desta porta localmente.
+# Ao iniciarmos o serviço "nginx" através do comando:
 
-	## Persistência de Dados
+docker run -d -e NGINX_ENTRYPOINT_QUITE_LOGS=1 nginx:1.19.4-alpine
 
-	# Containers não realizam a persistência de dados. Então qualquer edição ou alteração
-	# de dados realizados dentro de um containers, serão perdidas.
-	# Para solucionar essa situação, é necessários ter Volumes de Dados.
+# O mesmo poderá ser acessado via porta 80 do docker, porém não acessivel
+# via localhost. Desta maneira, é necessário indicar qual porta local
+# servirá de acesso a porta do docker. No proximo comando será indicado como
+# porta de acesso, a porta de número 8080:
 
-	## Volumes em Container
+docker run -d -p 8080:80 nginx:1.19.4-alpine
 
-	# Os volumes são expostos do host para o container, e não o contrário.
-	# Quando o container não está em execução, os dados continuam disponiveis
-	# quando o mesmo é iniciado novamente.
+# Desta maneira, o serviço pode ser acessado via url: 
+# localhost:8080 ou 0.0.0.0:8080 ou 127.0.0.1:8080 ou ip_maquina:8080
 
-	# Observação: Os arquivos e diretórios expostos estão em sua máquina host e não
-	# no container. Desta forma, qualquer modificação ou persistência, é realizada 
-	# no seu computador, e não no container.
+## Persistência de Dados
 
-	# Para criar / executar um container com um volume, basta acrescentar a opção "-v 'caminho/volume'" 
-	# no comando run.
-	# Exemplo:
+# Containers não realizam a persistência de dados. Então qualquer edição ou alteração
+# de dados realizados dentro de um containers, serão perdidas.
+# Para solucionar essa situação, é necessários ter Volumes de Dados.
 
-	docker run -v "/var/www" --name servidor_web -d -e NGINX_ENTRYPOINT_QUITE_LOGS=1 nginx:1.19.4-alpine
-	
-	# Quando um container é excluido, o vinculo entre o volume e o docker é quebrado, 
-	# tendo qualquer persistência perdida. Entretando, se o mesmo for executado, o conteudo continuará
-	# disponivel para acesso.
+## Volumes em Container
 
-	# Para não ocorrer a perda do vinculo, é possivel mapear um diretório do host e realizar esse vinculo
-	# com o container
-	# em -v, será mapeado primeiro o diretório do host e depois do container -> 
-	# -v "diretorio/host:diretorio/container"
-	# onde tudo o que ocorrer no diretorio host, será mapeado no container
+# Os volumes são expostos do host para o container, e não o contrário.
+# Quando o container não está em execução, os dados continuam disponiveis
+# quando o mesmo é iniciado novamente.
 
-	docker run -v "/home/us_docker/arquivos_html:/usr/share/nginx/html" --name servidor_web -d -p 8080:80 -e NGINX_ENTRYPOINT_QUITE_LOGS=1 nginx:1.19.4-alpine
+# Observação: Os arquivos e diretórios expostos estão em sua máquina host e não
+# no container. Desta forma, qualquer modificação ou persistência, é realizada 
+# no seu computador, e não no container.
 
-	# quando acessado o local host, será possivel visualizar o arquivo html localizado em arquivos_html
-	# como se estivessem no servidor web do nginx no diretorio html.
-	# Toda edição realizada através do container, será persistida nos arquivos mapeados através do -v
+# Para criar / executar um container com um volume, basta acrescentar a opção "-v 'caminho/volume'" 
+# no comando run.
+# Exemplo:
 
-	## Shell do container
+docker run -v "/var/www" --name servidor_web -d -e NGINX_ENTRYPOINT_QUITE_LOGS=1 nginx:1.19.4-alpine
 
-	# Para habilitar o shell de um container em execução, basta executar
-	
-	docker exec -it servidor_web sh
+# Quando um container é excluido, o vinculo entre o volume e o docker é quebrado, 
+# tendo qualquer persistência perdida. Entretando, se o mesmo for executado, o conteudo continuará
+# disponivel para acesso.
 
-	## Úteis
+# Para não ocorrer a perda do vinculo, é possivel mapear um diretório do host e realizar esse vinculo
+# com o container
+# em -v, será mapeado primeiro o diretório do host e depois do container -> 
+# -v "diretorio/host:diretorio/container"
+# onde tudo o que ocorrer no diretorio host, será mapeado no container
 
-	# CTRL + D -> Sair do container
+docker run -v "/home/us_docker/arquivos_html:/usr/share/nginx/html" --name servidor_web -d -p 8080:80 -e NGINX_ENTRYPOINT_QUITE_LOGS=1 nginx:1.19.4-alpine
+
+# quando acessado o local host, será possivel visualizar o arquivo html localizado em arquivos_html
+# como se estivessem no servidor web do nginx no diretorio html.
+# Toda edição realizada através do container, será persistida nos arquivos mapeados através do -v
+
+## Shell do container
+
+# Para habilitar o shell de um container em execução, basta executar
+
+docker exec -it servidor_web sh
+
+## Úteis
+
+# CTRL + D -> Sair do container
 
 ## Comandos
 
-	# Quando executado o comando pull, representa que será feito o download da imagem
-	# Observação: Será realizado o download do site "https://hub.docker.com"
-	# tag é opcional, caso não seja declarado, sempre será feito o download da tag
-	# "latest" (ultima). Ultima versão disponibilizada.
-	# Não é recomendado baixar a ultima versão disponibilizada
-	docker pull imagem:tag
+# Quando executado o comando pull, representa que será feito o download da imagem
+# Observação: Será realizado o download do site "https://hub.docker.com"
+# tag é opcional, caso não seja declarado, sempre será feito o download da tag
+# "latest" (ultima). Ultima versão disponibilizada.
+# Não é recomendado baixar a ultima versão disponibilizada
+docker pull imagem:tag
 
-	# Quando executado o comando run, caso não exista a imagem localmente, 
-	# será feito a busca, download da imagem, criação de um container baseado 
-	# na imagem baixada e a sua execução.
-	# Observação: Será realizada a busca e download do site "https://hub.docker.com"
-	# tag é opcional, caso não seja declarado, sempre será feito o download da tag
-	# "latest" (ultima). Ultima versão disponibilizada.
-	# Não é recomendado baixar a ultima versão disponibilizada
-	docker run imagem:tag
+# Quando executado o comando run, caso não exista a imagem localmente, 
+# será feito a busca, download da imagem, criação de um container baseado 
+# na imagem baixada e a sua execução.
+# Observação: Será realizada a busca e download do site "https://hub.docker.com"
+# tag é opcional, caso não seja declarado, sempre será feito o download da tag
+# "latest" (ultima). Ultima versão disponibilizada.
+# Não é recomendado baixar a ultima versão disponibilizada
+docker run imagem:tag
 
-	# Verificar a versão do docker
-	docker --version
+# Verificar a versão do docker
+docker --version
 
-	# Lista de comandos
-	docker --help
-	docker comando --help
+# Lista de comandos
+docker --help
+docker comando --help
 
-	# exemplo:	
-	docker container --help
+# exemplo:	
+docker container --help
 
-	# Listar todos os containers
-	docker container ls
+# Listar todos os containers
+docker container ls
 
-	# Listar todos os containers em execução
-	docker ps 
+# Listar todos os containers em execução
+docker ps 
 
-	# Listar todos os containers em execução e parados
-	docker ps -a
+# Listar todos os containers em execução e parados
+docker ps -a
 
-	# Iniciar / Ativar um container
-	docker container start id_container
+# Iniciar / Ativar um container
+docker container start id_container
 
-	# excluir uma imagem
-	# caso possua um container com essa imagem, 
-	# ou outra imagem baseada nessa, dará erro
-	# sendo necessário forçar sua exclusão ( -f )
-	# Desta maneira o Container será excluido também
-	docker image rm id_ou_nome [-f]
+# excluir uma imagem
+# caso possua um container com essa imagem, 
+# ou outra imagem baseada nessa, dará erro
+# sendo necessário forçar sua exclusão ( -f )
+# Desta maneira o Container será excluido também
+docker image rm id_ou_nome [-f]
 
-	# listar as imagens locais
-	docker image ls
+# listar as imagens locais
+docker image ls
 
-	# inspecionar a imagem
-	docker image inspect nome_ou_id_image
+# inspecionar a imagem
+docker image inspect nome_ou_id_image
 
-	# inspecionar o container
-	docker inspect nome_ou_id_container
+# inspecionar o container
+docker inspect nome_ou_id_container
 
-	# Criar uma image baseado em outra image
-	docker image tag image_baseada:tag_image nome_image:tag_image
+# Criar uma image baseado em outra image
+docker image tag image_baseada:tag_image nome_image:tag_image
 
-	# Executando o nginx sem ocupar o console 
-	docker run --name servidor_web -d -e NGINX_ENTRYPOINT_QUITE_LOGS=1 nginx:1.19.4-alpine
+# Executando o nginx sem ocupar o console 
+docker run --name servidor_web -d -e NGINX_ENTRYPOINT_QUITE_LOGS=1 nginx:1.19.4-alpine
 
-	# Acessando a porta de um container
-	# Desta maneira, quando um container é iniciado e o mesmo é um container de serviço
-	# é disponibilizado uma porta de acesso, entretanto o mesmo não é acessado via
-	# localhost, já que é uma aplicação isolada. Desta maneira, é necessário indicar
-	# em qual porta do local host, esse container será acessado.
-	# Obs: Pode ser utilizado qualquer porta do localhost que não esteja sendo
-	# usada.
-	# É possível verificar a porta do serviço através do comando: "docker ps".
-	docker run -d -p porta_local_host:porta_servico_container imagem_servico:tag
+# Acessando a porta de um container
+# Desta maneira, quando um container é iniciado e o mesmo é um container de serviço
+# é disponibilizado uma porta de acesso, entretanto o mesmo não é acessado via
+# localhost, já que é uma aplicação isolada. Desta maneira, é necessário indicar
+# em qual porta do local host, esse container será acessado.
+# Obs: Pode ser utilizado qualquer porta do localhost que não esteja sendo
+# usada.
+# É possível verificar a porta do serviço através do comando: "docker ps".
+docker run -d -p porta_local_host:porta_servico_container imagem_servico:tag
 
 
-	# Criar um container dando nomenclatura baseado em uma image e ativar 
-	# o shell do cantainer
-	docker run --name nome_container --rm -i -t image:tag sh
+# Criar um container dando nomenclatura baseado em uma image e ativar 
+# o shell do cantainer
+docker run --name nome_container --rm -i -t image:tag sh
 
-	# Criar um container e setando um volume para ele atraves da opcao -v
-	docker run -v "/var/www" --name nome_container -d -e [opcoes image] image:tag
+# Criar um container e setando um volume para ele atraves da opcao -v
+docker run -v "/var/www" --name nome_container -d -e [opcoes image] image:tag
 
-	# Habilitar o modo shell do container já em execução
-	docker exec -it nome_container sh
+# Habilitar o modo shell do container já em execução
+docker exec -it nome_container sh
 
-	# Parar a execução de um container
-	docker container start id_container
+# Parar a execução de um container
+docker container start id_container
 
-	# Parar a execução de um container
-	docker container stop id_container
+# Parar a execução de um container
+docker container stop id_container
 
-	# Atualizar container 
-	apk update
+# Atualizar container 
+apk update
 
-	# Adicionar editor de texto nano
-	apk add nano
+# Adicionar editor de texto nano
+apk add nano
