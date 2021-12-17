@@ -1,0 +1,51 @@
+Settings.py
+
+INSTALLED_APPS = [ ...
+    'django.contrib.gis',]
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'OPTIONS': {'options': '-c search_path=sc_db_vila_a,sc_pl_pontos_passagem,sc_planilha_placas_s_filtro,sc_api_celepar,public'},
+        'NAME': 'db_muralha',
+        'USER': 'us_db_muralha',
+        'PASSWORD': 'DBMuralha2021',
+        'HOST': 'localhost',
+        'PORT': '7979'
+    }
+}
+
+Models.py
+
+from geral.models import OrigemDados
+from django.contrib.gis.db import models
+
+class DadosCamera(models.Model):
+    id = models.AutoField(primary_key=True, db_column='dc_id')
+    localizacao = models.GeometryField(db_column='dc_localizacao', )
+
+    class Meta:
+        managed = False
+        db_tablespace = 'public'
+        db_table = 'dados_camera'
+
+    def __str__(self) -> str:
+        return f"{self.localizacao}"
+
+
+Criar uma pasta dentro do APP 
+
+mkdir nome_app/data
+
+cd nome_app/data
+
+wget https://thematicmapping.org/downloads/TM_WORLD_BORDERS-0.3.zip
+
+unzip TM_WORLD_BORDERS-0.3.zip
+
+cd ../..
+
+python manage.py sqlmigrate nome_app 0001
+
+
+python3 projeto/manage.py ogrinspect projeto/nome_app/data/TM_WORLD_BORDERS-0.3.shp WorldBorder >> projeto/nome_app/models.py --srid=4326 --mapping --multi

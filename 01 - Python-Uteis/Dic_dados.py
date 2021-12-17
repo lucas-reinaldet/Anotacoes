@@ -8,7 +8,7 @@ Created on Mon Oct 18 17:56:43 2021
 
 import pandas as pd
 
-data = open('/home/lucas/Área de Trabalho/Projetos/01 - Projeto_muralha/db_muralha/SQL-base.sql', 
+data = open('/home/lucas/Área de Trabalho/Projetos/01 - Projeto_muralha/db_muralha/SQL-base-completo-DW.sql', 
             'r', 
             encoding="utf8")
 
@@ -44,7 +44,7 @@ for text in data:
         if 'TABLE' in inf and 'CREATE' in inf:
                             
                 controle = False
-                aux = inf.split(' ')[2].split('.')
+                aux = inf.split(' ')[5].split('.')
                 tabela = aux[1]
                 schema = aux[0]
                     
@@ -52,6 +52,7 @@ for text in data:
                 'SEQUENCE' not in inf and \
                 'SCHEMA' not in inf and \
                 'FOREIGN' not in inf and \
+                'GRANT' not in inf and \
                 ');' not in inf:
 
             lin =  inf.split('--')

@@ -1,8 +1,65 @@
+# Iniciar ftp
+
 ftp
 
-open ip porta
+# Conectar
 
-user
+open <ip_porta>
 
-password
+<usuário>
 
+<password>
+
+# Sair
+
+quit
+
+# ou
+
+bye
+
+# Pegar um arquivo
+
+get <nome_arquivo>
+
+# Pegar Vários Arquivos
+
+mget *
+
+# Observação: Será solicitado confirmação de download
+# para cada arquivo a ser baixado.
+# Para desativar essa solicitação:
+
+mget * -i
+
+mget *.pl
+
+# Excluir Arquivos
+
+delete fileName
+
+# Carregar arquivo na máquina remota
+
+put <nome_arquivo>
+
+# Carregar varios arquivos na máquina remota
+
+mput *.pl
+
+# Criar Diretório
+
+mkdir <nome_diretorio>
+
+# Excluir Diretorio
+
+rmdir <nome_diretorio>
+
+# Definir mo de Transferência
+
+# ascii (Padrão)
+
+ascii
+
+# Binary
+
+binary

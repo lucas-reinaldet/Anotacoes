@@ -1,0 +1,35 @@
+sudo docker run --name dc_spark -v /home/lucas/'Área de Trabalho'/Projetos/Projeto_muralha/Spark -t ubuntu:20.04
+
+sudo docker exec -it dc_spark bash
+
+apt-get install nano
+
+apt-get install wget
+
+apt-get install pip
+
+apt-get install zip
+
+apt-get install openjdk-8-jdk-headless -qq > /dev/null
+wget -q https://archive.apache.org/dist/spark/spark-2.4.4/spark-2.4.4-bin-hadoop2.7.tgz
+tar xf spark-2.4.4-bin-hadoop2.7.tgz
+wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
+unzip ngrok-stable-linux-amd64.zip
+pip install -q findspark
+pip install findspark
+
+python3
+
+import os
+os.environ["JAVA_HOME"] = "/usr/lib/jvm/java-8-openjdk-amd64"
+os.environ["SPARK_HOME"] = "/content/spark-2.4.4-bin-hadoop2.7"
+
+import findspark
+findspark.init("spark-2.4.4-bin-hadoop2.7")
+from pyspark.sql import SparkSession
+from pyspark import SparkContext, SparkConf
+
+conf = SparkConf().set('spark.ui.port','4050')
+sc = SparkContext(conf=conf,appName="ptiApp")
+#ss = SparkSession.builder.master('localhost[*]').getOrCreate()
+ss = SparkSession.builder.master('local[*]').getOrCreate()
