@@ -1,0 +1,5 @@
+# ignorar Venv
+venv*/**
+
+# Pasta Código-Estudos
+estudos/**

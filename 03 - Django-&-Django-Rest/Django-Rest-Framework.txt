@@ -1,5 +1,4 @@
 #
-#
 # Para a criação do projeto de API do Django Rest Framework, é utilizado como base, o proprio django. 
 # Sendo assim necessário a sua instalaçãop e configuração inicial.
 # 
@@ -13,4 +12,25 @@
 # "serializers.py" onde será concentrado os locais de acesso externo e as "viewsets.py" onde será os 
 # controladores de fluxo.
 
+# Commando
+
+pip install djangorestframework
+
+# Settings.py
+
+INSTALLED_APPS = [
+    ...,
+    'rest_framework',
+]
+
+# Criar um Pacote dentro da app
+
+mkdir api
+
+Criar um arquivo "__init__.py" para tornar a pasta um package do django
+
+# Criar arquivos Python
+
+serializers.py
+viewsets.py
 

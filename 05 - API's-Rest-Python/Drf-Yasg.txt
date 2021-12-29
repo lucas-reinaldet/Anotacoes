@@ -1,0 +1,18 @@
+https://drf-yasg.readthedocs.io/en/stable/readme.html
+
+# Irá trabalhar com enconjunto com o Django
+# Instalação
+
+pip install -U drf-yasg
+
+# Opcional, serve para validação de IP's de acessi
+
+pip install -U drf-yasg[validation]
+
+# Settings.py
+
+INSTALLED_APPS = [
+   ...
+   'django.contrib.staticfiles',
+   'drf_yasg',
+]

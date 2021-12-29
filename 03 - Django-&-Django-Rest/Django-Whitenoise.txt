@@ -1,0 +1,8 @@
+http://whitenoise.evans.io/en/stable/
+
+pip install whitenoise
+
+MIDDLEWARE = [
+  'whitenoise.middleware.WhiteNoiseMiddleware',
+  # ...
+]

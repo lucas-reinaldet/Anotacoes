@@ -1,0 +1,6 @@
+https://www.nginx.com/resources/wiki/start/topics/tutorials/install/
+
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys $key
+sudo apt update
+sudo apt install nginx
+

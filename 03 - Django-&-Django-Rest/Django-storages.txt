@@ -1,0 +1,4 @@
+https://django-storages.readthedocs.io/en/latest/
+
+pip install django-storages
+

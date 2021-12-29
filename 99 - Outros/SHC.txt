@@ -1,0 +1,5 @@
+sudo add-apt-repository ppa:neurobin/ppa
+sudo apt-get update
+sudo apt-get install shc
+
+shc -f script.sh -o binary
