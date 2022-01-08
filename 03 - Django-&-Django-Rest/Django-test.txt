@@ -1,0 +1,53 @@
+# É possivel a realização de testes no django, utilizando o commando:
+
+python3 proj/manage.py test
+
+# Desta maneira, ele utilizará todos os arquivos "tests.py" dos app's e os executará
+# entretanto, existe alguns porens.
+
+# Quando esse tipo de teste é realizado, o django cria uma base test para
+# a realização de suas atividades e apos concluido, exclui essa base para não
+# restar residuos.
+
+# Em casos que o usuario do django possui limitações de privilégios,
+# isso pode se tornar um problema, já que o mesmo não poderá criar essas bases
+
+# Uma forma de ignorar esse tipo desituação, preservando a base de dados, é a
+# utilização do commando "--keepdb" como argumento. Desta maneira, executará os testes
+# sem menores problemas.
+
+python3 proj/manage.py test --keepdb
+
+# Para a realização de testes pontuais em App's, é possivel determinar o app a 
+# ser executado acrescentando o nome do app depois do argumentos.
+
+python3 proj/manage.py test --keepdb app_proj
+
+# Desta maneira, ele executara todos os testes que se encontra nessa app.
+
+# Existe também a possibilidade de indicar qual classe de teste será executado
+# sendo necessário especificar o app_proj.arquivo_test.ClassTestApp
+# Observação: Por padrão, o Django cria um arquivo chamado "tests.py" para cada
+# app, sendo assim: app_proj.tests.ClassTestApp
+
+python3 proj/manage.py test --keepdb app_proj.tests.TestClassApp
+
+# E também é possivel indicar qual função será executada, acrescentando o nome da função
+# no final da linha de commando
+
+python3 proj/manage.py test --keepdb app_proj.tests.TestClassApp.test_function
+
+# Observação: Toda função, idependente se é especificada ou não, deverá possuir como 
+# primeiro argumento o "self"
+
+# Exemplo do arquivo "tests.py" de uma app
+
+# Observação: É importante ter a nomenclatura "test" no começo de cada classe e função.
+
+from django.test import TestCase
+
+class TestClassApp(TestCase):
+
+    def test_function(self):
+
+        print('Commandos a serem executados, deverão estar nessa função')

@@ -31,6 +31,77 @@ Criar um arquivo "__init__.py" para tornar a pasta um package do django
 
 # Criar arquivos Python
 
-serializers.py
-viewsets.py
+# serializers.py
 
+Exemplo Código:
+
+from django.contrib.auth.models import User
+from django.db.models import fields
+from rest_framework import serializers
+
+class UserSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = User
+        fields = ['url', 'username', 'email', 'groups']
+
+# viewsets.py
+
+Exemplo Código:
+
+from django.contrib.auth.models import User, Group
+from rest_framework import viewsets
+from rest_framework import permissions
+from geral.api import serializers
+
+class UserViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = User.objects.all().order_by('-date_joined')
+    serializer_class = serializers.UserSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+# router.py
+
+from rest_framework import routers as rt
+from geral.api import viewsets
+
+def _register_routers():
+    router = rt.DefaultRouter()
+    router.register(r'geral/users', viewsets.UserViewSet)
+    return router.registry
+
+ROUTERS_GERAL = _register_routers()
+
+# Na pasta do projeto (onde se localiza settings.py), criar um arquivo:
+
+# api_router.py
+
+from rest_framework import routers as rt
+from geral.api.router import ROUTERS_GERAL
+
+def get_routers():
+    routers = rt.DefaultRouter()
+    routers.registry.extend(ROUTERS_GERAL)
+    return routers
+
+# No arquivo urls.py
+
+from django.urls import include, path
+
+from bk_muralha import api_routers
+
+urlpatterns = [
+    [...]
+    path(r'api/', include(api_routers.get_routers().urls)),
+    path(r'api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+]
+
+
+# Definir configurações do rest_framework
+# settings.py
+
+REST_FRAMEWORK = {
+                    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+                    'PAGE_SIZE': 10
+                }

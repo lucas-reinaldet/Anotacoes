@@ -2,7 +2,18 @@ http://whitenoise.evans.io/en/stable/
 
 pip install whitenoise
 
-MIDDLEWARE = [
-  'whitenoise.middleware.WhiteNoiseMiddleware',
-  # ...
+# settings.py
+
+def _loc_arq_statics():
+    return str(GR_BASE_DIR)
+
+MEDIA_ROOT = join(_loc_arq_statics(), 'media')
+STATIC_ROOT = join(_loc_arq_statics(), 'static')
+STATIC_FILE_ROOT = join(_loc_arq_statics(), 'file')
+STATIC_FILES_DIRS = [
+    ("geral", join(GR_BASE_DIR, "geral/static"))
 ]
+
+MIDDLEWARE = [...]
+  + ['whitenoise.middleware.WhiteNoiseMiddleware',]
+

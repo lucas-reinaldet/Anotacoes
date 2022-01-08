@@ -1,0 +1,21 @@
+# Para realizar a publicação/gerar imagens, é necessário
+# configurar o seu ambiente para lhe possibilitar acesso 
+# ao seu repositorio do https://hub.docker.com/
+# Para isso:
+
+Acesse Settings em https://hub.docker.com
+
+Security
+
+New Acess token
+
+# OR
+
+docker login --username=usuario
+digite o password
+
+# A senha é salva sem criptografia em um arquivo Json.
+
+# Comando para neviar a imagem para o DockerHub
+
+docker image push nome_usuario/imagem:tag 

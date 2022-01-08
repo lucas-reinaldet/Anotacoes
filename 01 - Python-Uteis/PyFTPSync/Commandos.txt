@@ -1,2 +1,5 @@
+# Instalação da Biblioteca
 pip install pyftpsync --upgrade
 
+# Verificar versão instalada
+pyftpsync --version -v

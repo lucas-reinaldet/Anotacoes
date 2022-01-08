@@ -1,0 +1,9 @@
+# Resolve o Problema de Arquivos Estáticos
+
+# wsgi.py
+
+from dj_static import Cling
+
+application = Cling(get_wsgi_application())
+
+# Depois necessário definir a pasta STATIC_ROOT de settings.py

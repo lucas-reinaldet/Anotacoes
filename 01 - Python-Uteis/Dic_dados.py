@@ -5,10 +5,13 @@ Created on Mon Oct 18 17:56:43 2021
 
 @author: lucas
 """
-
 import pandas as pd
 
-data = open('/home/lucas/Área de Trabalho/Projetos/01 - Projeto_muralha/db_muralha/SQL-base-completo-DW.sql', 
+from pathlib import Path
+GR_BASE_DIR = Path(__file__).resolve().parent.parent
+
+
+data = open(f'{GR_BASE_DIR}/SQL-base-completo-DW.sql', 
             'r', 
             encoding="utf8")
 
@@ -20,9 +23,9 @@ tamanho = 0
 especificacoes = ''
 virgula = ''
 
-arquivo = open('/home/lucas/Área de Trabalho/Projetos/01 - Projeto_muralha/db_muralha/SQL-cadastro-dic.sql','w')
+arquivo = open(f'{GR_BASE_DIR}/SQL-cadastro-dic.sql','w')
 
-arquivo.write(f'INSERT INTO dicionario_dados_muralha \n')
+arquivo.write(f'INSERT INTO dic_dados \n')
 arquivo.write(f'    (ddm_schema, ddm_tabela, ddm_campo, ddm_tipo, ddm_tamanho, ddm_especificacoes, ddm_observacao)')
 arquivo.write(f'\n')
 arquivo.write(f'VALUES')

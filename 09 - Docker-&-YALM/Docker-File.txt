@@ -1,0 +1,57 @@
+# O Docker File, serve para facilitar a configuração de ambientes dockers, sem 
+# a necessidade de uma grande quantidade de commandos, tornando o processo lento
+# de dificil manutenção.
+
+# Docker é um documento texto no formato YALM com instruções usadas pelo docker
+# para gerar uma imagem baseadas nas instruções do documentos.
+
+# É indicado, quando o container possui apenas um arquivo DockerFile, é convenção colocar o nome
+# "Dockerfile", quando possui mais de um, é costume colocar como extenção ".dockerfile"
+
+# Exemplo Arquivo:
+
+------------------------------------------------------
+
+# Normalmente uma imagem Docker sempre é baseado em algo
+# utilizando o comando FROM
+FROM python:3.9.0-alpine
+
+# Criador e Mantenedor da imagem
+LABEL maintainer "Lucas Reinaldet <lucas.reinaldet@gmail.com>"
+
+# Copiar todos os arquivos que se encontra no diretório onde se encontra o arquivo
+# e envie para
+COPY ./06-fusion_final /var/www
+
+# Necessário especificar para definir o local onde os comandos serão executados.
+WORKDIR /var/www/
+
+# Executar comandos
+RUN apk update 
+RUN apk add zlib-dev jpeg-dev gcc musl-dev 
+RUN pip install --upgrade pip
+
+# Commando executado no WORKDIR depois que o container é executado.
+ENTRYPOINT ["pip install -r requirements.txt", \
+            "python manage.py migrate", \
+            "python manage.py runserver 0.0.0.0:8000"]
+
+# Exponha o serviço na porta 80
+EXPOSE 8000
+
+------------------------------------------------------
+
+# Comando para gerar a imagem  a partir de um dockerfile
+# -f -> Nome do arquivo, obs: Se o nome do arquivo for "Dockerfile" não é necessário 
+# especificar o arquivo
+# -t -> Criando uma tag para a sua imagem. nome_ambiente/nome_imagem:tag
+# Exemplo: lucasreinaldet/servidor_web:v1
+# . -> para indicar o local onde será armazenado a imagem
+
+sudo docker build -f python3.dockerfile -t lucasreinaldet/project_django_ap:v1 .
+
+# testar
+
+sudo docker run --name "projeto" -d -p 8080:80 lucasreinaldet/project_django_ap:v1
+
+
