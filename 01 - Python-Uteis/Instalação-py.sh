@@ -1,5 +1,4 @@
 # Instalação do Python em uma versão especifica
-
 sudo apt-get install python3.8 -y
 
 # Instalação do PIP

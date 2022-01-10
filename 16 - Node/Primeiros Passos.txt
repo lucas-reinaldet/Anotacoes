@@ -1,0 +1,3 @@
+# Criar um projeto
+
+npx create-react-app fundamentos-react
