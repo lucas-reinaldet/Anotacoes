@@ -17,3 +17,4 @@ STATIC_FILES_DIRS = [
 MIDDLEWARE = [...]
   + ['whitenoise.middleware.WhiteNoiseMiddleware',]
 
+python3 projeto/manage.py collectstatic

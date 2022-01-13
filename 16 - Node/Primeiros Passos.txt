@@ -1,3 +1,7 @@
 # Criar um projeto
 
 npx create-react-app fundamentos-react
+
+# Depois de instalado, basta acessar o projeto e executar
+
+npm start
