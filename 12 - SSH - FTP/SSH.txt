@@ -39,20 +39,3 @@ ssh-copy-id user@serverip
 Pronto, para se conectar, use:
 
 ssh -p 'porta' 'usuario@ip'
-
--------------------------
-
-Tranferir arquivo
-
-sftp vm-lucas-01@192.168.100.98
-
-(Porta customizadA)
-
-sftp -oPort=customport usuario@servidor_endereçodeip
-
-put arquivo local
-
-a letra l antes do comando, mostra a resposta do comando referente ao ambiente local
-
-o comando sem o l é referente a maquina remota conectada
-

@@ -1,81 +1,236 @@
-sudo apt update && sudo apt upgrade
+function configuracoes_essenciais() {
+    
+    echo "Atualização e Upgrade do Sistema."
+    sudo apt update && sudo apt upgrade
 
-# NVidia
+    echo "Instalação do Net-tools."
+    sudo apt install net-tools
 
-ubuntu-drivers devices
+    echo "Instalação do Python3."
+    sudo apt-get install python3 -y
 
-# se for trabalhar com IA usar a 450
-sudo apt install nvidia-driver-X
+    echo "Instalação do Venv."
+    sudo apt-get install python3-venv -y
 
-sudo reboot
+    echo "Instalação do PIP."
+    sudo apt install python3-pip
 
-# Net Tools
+    echo "Instalação do GIT."
+    sudo apt-get install git -y
+    
+    echo "Instalação do JQ.."
+    sudo apt-get install jq -y
 
-sudo apt install net-tools
+    echo "Selecionando Driver da NVIDIA."
+    local DRIVER_NVIDIA=""
+    for i in $(ubuntu-drivers devices)
+    do
+        if [[ ${i} == *"nvidia-driver-"* ]]
+        then
+            DRIVER_NVIDIA="$i"
+        elif [[ ${i} == *"recommended"* ]]
+        then
+            break
+        fi
+    done
 
-# vlc
-sudo snap install vlc
+    echo "Instalação do Driver ${DRIVER_NVIDIA}."
+    sudo apt install ${DRIVER_NVIDIA}
 
-# Anaconda
+    echo "Instalação do VLC."
+    sudo snap install vlc
+}
 
-https://repo.anaconda.com/archive/Anaconda3-2021.05-Linux-x86_64.sh
+function install_postgresql_pgadmin() {
+    
+    sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+    wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+    sudo curl https://www.pgadmin.org/static/packages_pgadmin_org.pub | sudo apt-key add
+    sudo sh -c 'echo "deb https://ftp.postgresql.org/pub/pgadmin/pgadmin4/apt/$(lsb_release -cs) pgadmin4 main" > /etc/apt/sources.list.d/pgadmin4.list && apt update'
 
-# Postgres
+    echo "Atualizando o repositório do PostGis"
+    wget --quiet -O - http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc | sudo apt-key add -
 
-sudo sh -c '# deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" >> /etc/apt/sources.list.d/pgdg.list'
-wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
-wget --quiet -O - http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc | sudo apt-key add -
+    echo "Update do Sistema!"
+    sudo apt-get update -y
 
-sudo apt-get update -y
-sudo apt-get install build-essential -y
-sudo apt-get install libreadline-dev -y
-sudo apt-get install zlib1g-dev -y
-sudo apt-get install gettext -y
- 
-sudo apt-get -y install postgresql-13 -y
-sudo apt-get install -y postgresql-common -y
-sudo apt-get install postgresql-13-postgis-3 -y
-sudo apt-get install postgresql-13-postgis-3-scripts -y
-sudo apt-get install postgis -y
-sudo systemctl restart postgresql@13-main
-sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD '30894'"
-sudo -u postgres psql -c "SET TIME ZONE 'GMT-3'"
+    echo "Instalação Pacotes essenciais para o Postgresql"
+    echo "build-essential"
+    sudo apt-get install build-essential -y
 
-# PgAdmin
+    echo "Instalação do libreadline-dev"
+    sudo apt-get install libreadline-dev -y
+    
+    echo "Instalação do zlib1g-dev"
+    sudo apt-get install zlib1g-dev -y
+    
+    echo "Instalação do gettext"
+    sudo apt-get install gettext -y
 
-sudo curl https://www.pgadmin.org/static/packages_pgadmin_org.pub | sudo apt-key add
-sudo sh -c 'echo "deb https://ftp.postgresql.org/pub/pgadmin/pgadmin4/apt/$(lsb_release -cs) pgadmin4 main" > /etc/apt/sources.list.d/pgadmin4.list && apt update'
-sudo apt install pgadmin4-desktop
+    echo "Instalação do Postgresql versão 13 & Postgres Common"
+    sudo apt-get -y install postgresql-13 -y
+    sudo apt-get install -y postgresql-common -y
+    
+    echo "Instalação do PostGis para o Postgresql de versão 13 | Parte 01"
+    sudo apt-get install postgresql-13-postgis-3 -y
+    
+    echo "Instalação do PostGis para o Postgresql de versão 13 | Parte 02"
+    sudo apt-get install postgresql-13-postgis-3-scripts -y
+    
+    echo "Instalação do PostGis para o Postgresql de versão 13 | Parte 03"
+    sudo apt-get install postgis -y
 
-# Python
+    echo "Instalação do PGAdmin4."
+    sudo apt install pgadmin4-desktop
 
-sudo apt-get install python3.8 -y
-sudo apt-get install python3.8-venv -y
-sudo apt-get install pip -y
+    alteracao_porta_padrao_postgresql
 
-# GIT
+}
 
-sudo apt-get install git -y
+function alteracao_porta_padrao_postgresql() {
 
-mkdir ~/'Área de Trabalho'/Projetos
+    echo "Iniciando a configuração do PostgreSQL"
 
-cd ~/'Área de Trabalho'/Projetos
+    echo "PostgreSQL | Criando uma cópia de segurança do arquivo ${DB_NAME_FILE_CONF_POSTGRESQL} na pasta local"
+    if [ -f "${DB_NAME_FILE_CONF_POSTGRESQL}" ]
+    then
+        sudo rm -r ${DB_NAME_FILE_CONF_POSTGRESQL}
+    fi
 
-git clone https://github.com/lucas-reinaldet/Anotacoes.git
+    sudo cat ${DB_NAME_FILE_CONF_POSTGRESQL}| sed "s/port = ${DB_PORT_DEFAULT_PG}/port = ${DB_NEW_PORT_PG}/g" "${DB_FILE_CONF_PG}" >  ${DB_NAME_FILE_CONF_POSTGRESQL}
 
-# Discord
+    echo "PostgreSQL | Trocando a porta padrão ${DB_PORT_DEFAULT_PG} para ${DB_NEW_PORT_PG}"
 
-https://discord.com/api/download?platform=linux&format=deb
+    if [ -f "${DB_NAME_FILE_CONF_POSTGRESQL}" ] 
+    then
+        set +x
 
-# Google Chrome
+        local TAM_FILE_ALTER=`stat -c%s "${DB_NAME_FILE_CONF_POSTGRESQL}"`
+        local TAM_FILE_ORINAL=`stat -c%s "${DB_FILE_CONF_PG}"`
+        local SHA256_FILE_ALTER=`sha256sum "${DB_NAME_FILE_CONF_POSTGRESQL}" | cut -d' ' -f1`
+        local SHA256_FILE_ORIGINAL=`sha256sum "${DB_FILE_CONF_PG}" | cut -d' ' -f1`
+        
+        set -x
+        
+        if [ ${TAM_FILE_ALTER# 0} -eq ${TAM_FILE_ORINAL# 0} ] && [ "${SHA256_FILE_ALTER}" != "${SHA256_FILE_ORIGINAL}" ]
+        then   
+            
+            echo "Arquivo copiado e alterado com sucesso!"             
+            
+            sudo rm -r "${DB_FILE_CONF_PG}" 
+            
+            sudo mv "${DB_NAME_FILE_CONF_POSTGRESQL}" "${DB_FILE_CONF_PG//${DB_NAME_FILE_CONF_POSTGRESQL}/''}"
+            
+            sudo chown root:root "${DB_FOLDER_PG_HBA}"
 
-https://www.google.pt/intl/pt-PT/chrome/thank-you.html?brand=ISCS&statcb=0&installdataindex=empty&defaultbrowser=0#
+            sudo chown postgres:postgres "${DB_FILE_CONF_PG}"
 
-# VSCode
+            sudo chmod 744 "${DB_FOLDER_PG_HBA}"
+            
+            echo "Arquivo modificado com sucesso"
 
-https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64
+            echo "PostgreSQL | Reiniciando o Server do PostgreSQL"
+            sudo systemctl restart postgresql@13-main
+            
+            echo "Atualização da porta foi realizado com sucesso"
+            local RESULT=1 
+        elif [ ${TAM_FILE_ALTER# 0} -eq ${TAM_FILE_ORINAL# 0} ] && [ "${SHA256_FILE_ALTER}" == "${SHA256_FILE_ORIGINAL}" ]
+        then
+            echo "Porta padrão do PostgreSQL já se encontra modificada!"
 
-# Virtual Box 
+            echo "PostgreSQL | Reiniciando o Server do PostgreSQL"
+            sudo systemctl restart postgresql@13-main
 
-https://download.virtualbox.org/virtualbox/6.1.28/virtualbox-6.1_6.1.28-147628~Ubuntu~eoan_amd64.deb
+        fi
+    fi
+}
 
+
+function variaveis() {
+
+    # Variaveis utilizadas para configurar o Postgres
+    export DB_PWD_USER_POSTGRES='30894'
+    export DB_NEW_PORT_PG=7979
+    export DB_PORT_DEFAULT_PG=5432
+    export DB_USER_POSTGRES='postgres'
+    export DB_NAME_FILE_CONF_POSTGRESQL='postgresql.conf'
+    export DB_NAME_FILE_HBA_POSTGRESQL='pg_hba.conf'
+    export DB_FOLDER_PG_HBA=`find /etc/ /var/lib/ -ipath *13* -type f -name "${DB_NAME_FILE_HBA_POSTGRESQL}" 2>/dev/null`
+    export DB_FILE_CONF_PG=`find /etc/ /var/lib/ -ipath *13* -type f -name "${DB_NAME_FILE_CONF_POSTGRESQL}" 2>/dev/null`
+}
+
+function unset_variaveis() {
+
+    # Variavel Geral
+    unset FOLDER
+    unset ENV_FILE_SCHEMAS
+    unset ENV_FILE_GERAL
+
+    # Variaveis utilizadas para configurar a base de dados 
+    unset DB_PWD_USER_POSTGRES
+    unset DB_USER_POSTGRES
+    unset DB_NEW_PORT_PG
+    unset DB_PORT_DEFAULT_PG
+    unset DB_FOLDER_PG_HBA
+    unset DB_FILE_CONF_PG
+    unset DB_NAME_FILE_CONF_POSTGRESQL
+    unset DB_NAME_FILE_HBA_POSTGRESQL
+
+    echo "O sistema será reiniciado!"
+    reboot
+}
+
+function outros() {
+
+wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/cuda-ubuntu2004.pin
+sudo mv cuda-ubuntu2004.pin /etc/apt/preferences.d/cuda-repository-pin-600
+wget https://developer.download.nvidia.com/compute/cuda/11.6.0/local_installers/cuda-repo-ubuntu2004-11-6-local_11.6.0-510.39.01-1_amd64.deb
+sudo dpkg -i cuda-repo-ubuntu2004-11-6-local_11.6.0-510.39.01-1_amd64.deb
+sudo apt-key add /var/cuda-repo-ubuntu2004-11-6-local/7fa2af80.pub
+sudo apt-get update
+sudo apt-get -y install cuda
+
+    # GIT
+
+    mkdir ~/'Área de Trabalho'/Projetos
+
+    cd ~/'Área de Trabalho'/Projetos
+
+    git clone https://github.com/lucas-reinaldet/Anotacoes.git
+
+    # Discord
+
+    https://discord.com/api/download?platform=linux&format=deb
+
+    # Google Chrome
+
+    https://www.google.pt/intl/pt-PT/chrome/thank-you.html?brand=ISCS&statcb=0&installdataindex=empty&defaultbrowser=0#
+
+    # VSCode
+
+    https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64
+
+    # Virtual Box 
+
+    https://download.virtualbox.org/virtualbox/6.1.28/virtualbox-6.1_6.1.28-147628~Ubuntu~eoan_amd64.deb
+
+    # Anaconda
+
+    sudo apt-get install libgl1-mesa-glx libegl1-mesa libxrandr2 libxrandr2 libxss1 libxcursor1 libxcomposite1 libasound2 libxi6 libxtst6
+
+    https://www.anaconda.com/products/individual
+
+    sudo ln -s /home/lucas/anaconda3/bin/anaconda-navigator /usr/bin/anaconda
+
+    sudo echo '
+    export ANACONDA_HOME=~/anaconda3
+    export PATH=$PATH:$ANACONDA_HOME/bin
+    ' >> ~/.bashrc
+
+    source ~/.bashrc
+}
+
+variaveis
+configuracoes_essenciais
+install_postgresql_pgadmin
+unset_variaveis

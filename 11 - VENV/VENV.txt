@@ -16,15 +16,16 @@ sudo apt-get install pip -y
 ## Venv
 ##
 
+# Instalação
 sudo apt-get install python3.8-venv
 
 # cria um ambiente virtual, isolando o local da maquina
 
-python3 -m venv nome 
+python3 -m venv venv_nome 
 
 # executa a venv
 
-source nome/bin/activate
+source venv_nome/bin/activate
 
 # Desativa a VM
 

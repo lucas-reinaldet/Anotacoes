@@ -63,3 +63,20 @@ ascii
 # Binary
 
 binary
+
+
+-------------------------
+
+Tranferir arquivo
+
+sftp vm-lucas-01@192.168.100.98
+
+(Porta customizadA)
+
+sftp -oPort=customport usuario@servidor_endereçodeip
+
+put arquivo local
+
+a letra l antes do comando, mostra a resposta do comando referente ao ambiente local
+
+o comando sem o l é referente a maquina remota conectada
