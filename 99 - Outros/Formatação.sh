@@ -1,8 +1,8 @@
 function variaveis() {
 
     # Variaveis utilizadas para configurar o Postgres
-    export DB_PWD_USER_POSTGRES='54321'
-    export DB_NEW_PORT_PG=9876
+    export DB_PWD_USER_POSTGRES='30894'
+    export DB_NEW_PORT_PG=7979
     export DB_PORT_DEFAULT_PG=5432
     export DB_USER_POSTGRES='postgres'
     export DB_NAME_FILE_CONF_POSTGRESQL='postgresql.conf'
@@ -14,10 +14,10 @@ function variaveis() {
 function configuracoes_essenciais() {
     
     echo "Atualização e Upgrade do Sistema."
-    sudo apt update && sudo apt upgrade
+    sudo apt update -y && sudo apt upgrade -y
 
     echo "Instalação do Net-tools."
-    sudo apt install net-tools
+    sudo apt install net-tools -y
 
     echo "Instalação do Python3."
     sudo apt-get install python3 -y
@@ -34,6 +34,31 @@ function configuracoes_essenciais() {
     echo "Instalação do JQ.."
     sudo apt-get install jq -y
 
+    echo 'Instalação wget'
+    sudo apt-get install wget
+
+    echo 'Instalação de Curl'
+    sudo apt-get install curl -y
+
+    echo 'Instalação SSH'
+    sudo apt-get install openssh-server -y
+
+    echo 'Instalação do Anaconda'
+    sudo apt-get install libgl1-mesa-glx libegl1-mesa libxrandr2 libxrandr2 libxss1 libxcursor1 libxcomposite1 libasound2 libxi6 libxtst6
+    wget -q -O anaconda.sh https://repo.anaconda.com/archive/Anaconda3-2021.11-Linux-x86_64.sh
+    sh anaconda.sh
+    sudo rm -r anaconda.sh
+    sudo ln -s ~/anaconda3/bin/anaconda-navigator /usr/bin/anaconda
+    sudo echo '
+    export ANACONDA_HOME=~/anaconda3
+    export PATH=$PATH:$ANACONDA_HOME/bin
+    ' >> ~/.bashrc
+    source ~/.bashrc
+
+    echo 'Sincronizar com o projeto de Anotações do GIT'
+    mkdir ~/'Área de Trabalho'/Projetos
+    git clone https://github.com/lucas-reinaldet/Anotacoes.git ~/'Área de Trabalho'/Projetos/'00 - Anotacoes'
+
     echo "Selecionando Driver da NVIDIA."
     local DRIVER_NVIDIA=""
     for i in $(ubuntu-drivers devices)
@@ -48,7 +73,7 @@ function configuracoes_essenciais() {
     done
 
     echo "Instalação do Driver ${DRIVER_NVIDIA}."
-    sudo apt install ${DRIVER_NVIDIA}
+    sudo apt-get install ${DRIVER_NVIDIA} -y
 
     echo "Instalação do VLC."
     sudo snap install vlc
@@ -94,7 +119,13 @@ function install_postgresql_pgadmin() {
     sudo apt-get install postgis -y
 
     echo "Instalação do PGAdmin4."
-    sudo apt install pgadmin4-desktop
+    sudo apt install pgadmin4-desktop -y
+
+    echo "PostgreSQL | Criando a senha da base para o usuário postgres"
+    sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD '${DB_PWD_USER_POSTGRES}'"
+
+    echo "PostgreSQL | Mudando o Time Zone do Banco para GMT-3 (Brasilia)"
+    sudo -u postgres psql -c "SET TIME ZONE 'GMT-3'"
 
     alteracao_porta_padrao_postgresql
 
@@ -158,9 +189,6 @@ function alteracao_porta_padrao_postgresql() {
     fi
 }
 
-
-
-
 function unset_variaveis() {
 
     # Variavel Geral
@@ -182,54 +210,27 @@ function unset_variaveis() {
     reboot
 }
 
-function manuais() {
 
-    wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/cuda-ubuntu2004.pin
-    sudo mv cuda-ubuntu2004.pin /etc/apt/preferences.d/cuda-repository-pin-600
-    wget https://developer.download.nvidia.com/compute/cuda/11.6.0/local_installers/cuda-repo-ubuntu2004-11-6-local_11.6.0-510.39.01-1_amd64.deb
-    sudo dpkg -i cuda-repo-ubuntu2004-11-6-local_11.6.0-510.39.01-1_amd64.deb
-    sudo apt-key add /var/cuda-repo-ubuntu2004-11-6-local/7fa2af80.pub
-    sudo apt-get update
-    sudo apt-get -y install cuda
+function manual() {
+    echo 'Instalação do Discord'
+    sudo apt-get install -f
+    wget -q -O discord.deb https://discord.com/api/download?platform=linux&format=deb 
+    sudo dpkg -i discord.deb
+    sudo rm -r discord.deb
 
-    # GIT
+    echo 'Instalação Google Chrome'
+    wget -q https://www.google.com/chrome/thank-you.html?brand=BNSD&statcb=0&installdataindex=empty&defaultbrowser=0# 
+    sudo dpkg -i chrome.deb 
+    sudo rm -r chrome.deb
 
-    mkdir ~/'Área de Trabalho'/Projetos
+    echo 'Instalação VSCode'
+    wget -q -O vscode.deb https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64
+    sudo dpkg -i vscode.deb 
+    sudo rm -r vscode.deb
 
-    cd ~/'Área de Trabalho'/Projetos
-
-    git clone https://github.com/lucas-reinaldet/Anotacoes.git
-
-    # Discord
-
-    https://discord.com/api/download?platform=linux&format=deb
-
-    # Google Chrome
-
-    https://www.google.pt/intl/pt-PT/chrome/thank-you.html?brand=ISCS&statcb=0&installdataindex=empty&defaultbrowser=0#
-
-    # VSCode
-
-    https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64
-
-    # Virtual Box 
-
-    https://download.virtualbox.org/virtualbox/6.1.28/virtualbox-6.1_6.1.28-147628~Ubuntu~eoan_amd64.deb
-
-    # Anaconda
-
-    sudo apt-get install libgl1-mesa-glx libegl1-mesa libxrandr2 libxrandr2 libxss1 libxcursor1 libxcomposite1 libasound2 libxi6 libxtst6
-
-    https://www.anaconda.com/products/individual
-
-    sudo ln -s /home/lucas/anaconda3/bin/anaconda-navigator /usr/bin/anaconda
-
-    sudo echo '
-    export ANACONDA_HOME=~/anaconda3
-    export PATH=$PATH:$ANACONDA_HOME/bin
-    ' >> ~/.bashrc
-
-    source ~/.bashrc
+    echo 'NVIDIA Cuda'
+    https://developer.nvidia.com/cuda-downloads?target_os=Linux&target_arch=x86_64&Distribution=Ubuntu&target_version=20.04&target_type=deb_local
+    
 }
 
 variaveis
