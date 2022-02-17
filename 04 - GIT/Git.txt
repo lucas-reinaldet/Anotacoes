@@ -162,3 +162,9 @@ git commit -m "Mensagem"
 # Execute o push para adicionar as mudanças ao branch desejado
 
 git push url_projeto master
+
+____________________________________________
+
+Considerar um arquivo base, para ignorar qualquer tipo de modificação no arquivo.
+
+git update-index --assume-unchanged --add projeto/arquivo

@@ -39,3 +39,7 @@ ssh-copy-id user@serverip
 Pronto, para se conectar, use:
 
 ssh -p 'porta' 'usuario@ip'
+
+# Visualizar Chave SSH Publica
+
+cat ~/.ssh/id_rsa.pub

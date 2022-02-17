@@ -43,6 +43,9 @@ function configuracoes_essenciais() {
     echo 'Instalação SSH'
     sudo apt-get install openssh-server -y
 
+    echo 'Instalação Spotify'
+    snap install spotify
+
     echo 'Instalação do Anaconda'
     sudo apt-get install libgl1-mesa-glx libegl1-mesa libxrandr2 libxrandr2 libxss1 libxcursor1 libxcomposite1 libasound2 libxi6 libxtst6
     wget -q -O anaconda.sh https://repo.anaconda.com/archive/Anaconda3-2021.11-Linux-x86_64.sh
@@ -77,6 +80,11 @@ function configuracoes_essenciais() {
 
     echo "Instalação do VLC."
     sudo snap install vlc
+
+    echo 'Instalação do PyCharm via Snap.'
+    sudo apt-get install snap
+    sudo snap install pycharm-community --classic
+
 }
 
 function install_postgresql_pgadmin() {
@@ -231,6 +239,9 @@ function manual() {
     echo 'NVIDIA Cuda'
     https://developer.nvidia.com/cuda-downloads?target_os=Linux&target_arch=x86_64&Distribution=Ubuntu&target_version=20.04&target_type=deb_local
     
+    echo 'Definir senha para o usuário postgres do linux'
+    sudo passwd postgres 
+
 }
 
 variaveis
