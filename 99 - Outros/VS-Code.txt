@@ -9,5 +9,3 @@ Extensões Úteis
 4 - Python
 
 5 - yaml
-
-6 - Python

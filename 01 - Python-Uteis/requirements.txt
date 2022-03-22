@@ -1,0 +1,9 @@
+# Gerar um arquivo requirements:?
+
+# Com a venv ativada, basta executar:
+
+pip freeze > requirements.txt
+
+# Para isntalar os pacotes de Requirements, basta executar:
+
+pip install -r requirements.txt
