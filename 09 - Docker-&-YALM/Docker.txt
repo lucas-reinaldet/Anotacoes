@@ -91,7 +91,7 @@ docker run -v "/var/www" --name nome_container -d -e [opcoes image] image:tag
 # Habilitar o modo shell do container já em execução
 docker exec -it nome_container sh
 
-# Parar a execução de um container
+# iniciar a execução de um container
 docker container start id_container
 
 # Parar a execução de um container

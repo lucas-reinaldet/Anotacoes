@@ -36,7 +36,7 @@ docker version
 	
 ## Criando um usuário
 
-sudo addgroup us_docker
+sudo addgroup docker
 
 sudo adduser --ingroup docker us_docker
 

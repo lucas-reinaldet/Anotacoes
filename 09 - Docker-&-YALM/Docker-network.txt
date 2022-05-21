@@ -1,0 +1,71 @@
+# Lista todos os parametros disponiveis do docker
+docker network ls
+
+
+------------------------
+
+Tipos padrão docker:
+
+- bridge
+
+- host
+
+- none
+
+------------------------
+
+# Resulta no detalhamento de cada parametro, sendo como a informação
+# mais importante o Config de IPAM.
+docker network inspect bridge
+docker network inspect host
+docker network inspect none
+
+# Cria um container com o network padrão e mostra as configurações do mesmo
+# obs: --rm serve para remover o container depois da execução.
+docker run --rm alpine:3.12.1 sh -c 'ifconfig'
+
+# Passando o tipo de rede none
+# Terá apenas interface interna, sem comunicação
+docker run --net none --rm alpine:3.12.1 sh -c 'ifconfig'
+
+# o Host, terá como resultado a mesma configuração de rede que o 
+# hospedeiro.
+docker run --net host --rm alpine:3.12.1 sh -c 'ifconfig'
+
+# comunicação entre containers
+# Criara dois containers
+docker run --name "container_01_bridge" -d alpine:3.12.1 sleep 5000
+docker run --name "container_02_bridge" -d alpine:3.12.1 sleep 5000
+
+# Verificar o ip do container (ETH0)
+docker exec -it container_02_bridge ifconfig
+
+# Acessar o terminal do container
+docker exec -it container_01_bridge sh
+
+# executar:
+ping ip 
+
+# Verificar se tem acesso externo
+ping google.com.br
+
+# Criar uma nova faixa (subnet)
+docker network create --driver bridge outra_faixa
+
+# Agora temos uma nova faixa de IP interno
+docker network inspect outra_faixa
+
+# Criar um container com o novo network
+docker run --name "container_03_bridge" --net outra_faixa -d alpine:3.12.1 sleep 5000
+docker exec -it container_03_bridge ifconfig
+
+# Ao tentar acessar o ip do container que está em outra faixa de IP, teremos
+# 100% de perda nos pacotes.
+docker exec -it container_03_bridge ping 172.17.0.2
+
+# PAra permitir acesso a outra faixa, 
+# é necessário criar um ponto de conexão entre o container e a faixa
+docker network connect bridge container_03_bridge
+
+# Para remover o acesso, basta usar
+docker network disconnect bridge container_03_bridge

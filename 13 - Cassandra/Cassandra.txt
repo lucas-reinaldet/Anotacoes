@@ -45,7 +45,7 @@ cada serviço.
 ----------------------------------------------
 Fazer Download
 
-wget https://dlcdn.apache.org/cassandra/3.11.11/apache-cassandra-3.11.11-bin.tar.gz
+wget https://dlcdn.apache.org/cassandra/3.11.12/apache-cassandra-3.11.12-bin.tar.gz
 
 Descompactar arquivo
 
@@ -64,6 +64,26 @@ criar um link simbolico
 sudo ln -s /opt/cassandra/apache-cassandra-3.11.11 default
 
 ----------------------------------------------
+
+sudo addgroup cassandra
+
+sudo adduser --ingroup cassandra us_cassandra
+
+ou 
+
+sudo gpasswd -a us_cassandra cassandra
+
+su us_cassandra
+
+newgrp cassandra
+
+sudo chown -R us_cassandra:cassandra /opt/cassandra/*
+
+ou
+
+sudo chgrp -R cassandra /opt/cassandra/*
+
+---------------------------------------------
 
 Realizar a edição dos arquivo de configuração
 

@@ -2,7 +2,7 @@ function variaveis() {
 
     # Variaveis utilizadas para configurar o Postgres
     export DB_PWD_USER_POSTGRES='30894'
-    export DB_NEW_PORT_PG=7979
+    export DB_NEW_PORT_PG=8500
     export DB_PORT_DEFAULT_PG=5432
     export DB_USER_POSTGRES='postgres'
     export DB_NAME_FILE_CONF_POSTGRESQL='postgresql.conf'
@@ -126,8 +126,8 @@ function install_postgresql_pgadmin() {
     echo "Instalação do PostGis para o Postgresql de versão 13 | Parte 03"
     sudo apt-get install postgis -y
 
-    echo "Instalação do PGAdmin4."
-    sudo apt install pgadmin4-desktop -y
+    # echo "Instalação do PGAdmin4."
+    # sudo apt install pgadmin4-desktop -y
 
     echo "PostgreSQL | Criando a senha da base para o usuário postgres"
     sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD '${DB_PWD_USER_POSTGRES}'"
@@ -236,9 +236,6 @@ function manual() {
     sudo dpkg -i vscode.deb 
     sudo rm -r vscode.deb
 
-    echo 'NVIDIA Cuda'
-    https://developer.nvidia.com/cuda-downloads?target_os=Linux&target_arch=x86_64&Distribution=Ubuntu&target_version=20.04&target_type=deb_local
-    
     echo 'Definir senha para o usuário postgres do linux'
     sudo passwd postgres 
 
@@ -248,3 +245,4 @@ variaveis
 configuracoes_essenciais
 install_postgresql_pgadmin
 unset_variaveis
+# Executar comandos do metodo Manual
