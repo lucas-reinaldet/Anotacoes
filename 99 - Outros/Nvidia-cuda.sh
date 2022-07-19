@@ -1,19 +1,30 @@
-sudo apt-get install linux-headers-$(uname -r)
-
-sudo apt install nvidia-cuda-toolkit
-
-nvidia-smi
-
-nvcc --version
+----------------------
 
 sudo apt-get update
 
 sudo apt-get upgrade
 
+nvidia-smi
+
+sudo apt-get install linux-headers-$(uname -r)
+
+sudo apt install gcc-8 g++-8 gcc-9 g++-9 gcc-10 g++-10
+
+sudo apt install build-essential cmake git pkg-config libgtk-3-dev  libavcodec-dev libavformat-dev libswscale-dev libv4l-dev  libxvidcore-dev libx264-dev libjpeg-dev libpng-dev libtiff-dev  gfortran openexr libatlas-base-dev python3-dev python3-numpy  libtbb2 libtbb-dev libdc1394-22-dev libopenexr-dev  libgstreamer-plugins-base1.0-dev libgstreamer1.0-dev
+
+sudo apt-get install libtiff-dev
+
+sudo apt-get install libtiff-dev:i386
+
+sudo apt install nvidia-cuda-toolkit
+
+nvcc --version
+
 ----------------------
 
 conda install numba & conda install cudatoolkit
 
+sudo apt-get install cuda-drivers-fabricmanager-510
 
     echo 'NVIDIA Cuda'
     echo 'https://developer.nvidia.com/cuda-downloads?target_os=Linux&target_arch=x86_64&Distribution=Ubuntu&target_version=20.04&target_type=deb_local'
@@ -52,9 +63,6 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda/lib64
 
     sudo ldconfig -v
     
-    sudo apt install build-essential cmake git pkg-config libgtk-3-dev  libavcodec-dev libavformat-dev libswscale-dev libv4l-dev  libxvidcore-dev libx264-dev libjpeg-dev libpng-dev libtiff-dev  gfortran openexr libatlas-base-dev python3-dev python3-numpy  libtbb2 libtbb-dev libdc1394-22-dev libopenexr-dev  libgstreamer-plugins-base1.0-dev libgstreamer1.0-dev
-
-    sudo apt install gcc-8 g++-8 gcc-9 g++-9 gcc-10 g++-10
 
     mkdir ~/opencv_build
 
@@ -122,7 +130,8 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda/lib64
 
     rm ../CMakeCache.txt
 
-    cmake -D CMAKE_BUILD_TYPE=RELEASE \
+    cmake 
+    -D CMAKE_BUILD_TYPE=RELEASE \
     -D CMAKE_C_COMPILER=/usr/bin/gcc-8 \
     -D CMAKE_INSTALL_PREFIX=/usr/local \
     -D INSTALL_PYTHON_EXAMPLES=ON \
@@ -156,8 +165,6 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda/lib64
 
     sudo rm CMakeCache.txt
 
-    sudo apt-get install libtiff-dev
-    sudo apt-get install libtiff-dev:i386
 
     make -j16
 

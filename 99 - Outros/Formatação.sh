@@ -46,6 +46,9 @@ function configuracoes_essenciais() {
     echo 'Instalação Spotify'
     snap install spotify
 
+    echo 'instalar Java'
+    sudo apt install curl mlocate default-jdk -y
+
     echo 'Instalação do Anaconda'
     sudo apt-get install libgl1-mesa-glx libegl1-mesa libxrandr2 libxrandr2 libxss1 libxcursor1 libxcomposite1 libasound2 libxi6 libxtst6
     wget -q -O anaconda.sh https://repo.anaconda.com/archive/Anaconda3-2021.11-Linux-x86_64.sh
@@ -243,6 +246,6 @@ function manual() {
 
 variaveis
 configuracoes_essenciais
-install_postgresql_pgadmin
+# install_postgresql_pgadmin
 unset_variaveis
 # Executar comandos do metodo Manual

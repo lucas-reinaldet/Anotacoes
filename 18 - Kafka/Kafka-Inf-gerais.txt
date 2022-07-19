@@ -1,0 +1,153 @@
+Apache Kafka é uma Plataforma de Streaming de eventos distribuida de código aberto.
+
+Utilizado para Pipelines de dados de alto desempenho, analise de streaming, integração
+de dados e aplicações de missão crítica.
+
+- Dados São Publicados uma unica vez
+- Apenas aos que tem interesse que acessa o dados
+- É dividido entre "Publisher / Producers" e "Subcribers / Consumers", e são desaclopados
+- São Assincronos
+- Indisponibilidade do Publisher não afeta o desempenho
+- Possui Alta disponibilidade e Capacidade com Recursos de Cluster e Particionamento
+
+Producers:
+    - Gera informação
+
+Consumers:
+    - Consomem as informações
+
+Componentes:
+    - Broker
+    - Cliente API 
+        - Kafka Connect
+    - Streams
+    - Kafka KSQL
+
+### Kafka Broker
+
+Nome que o Servidor do Kafka Recebe
+
+Possui:
+    - Access Log
+    - Error Log
+    - Agent Log
+    - Referrer Log
+
+Atribui uma numerão sequencial (offset) as mensagens (são o conteudo que o Publisher e Subcribers leem)
+    - Atraves do Offset, é como é identificado o que já foi lido, o que esta faltando, etc.
+
+Salva em disco as mensagens recebidas:
+    - Não precisa ser consumido em tempo reaL;
+    - Permite recuperar em falahs;
+
+Possui um Cluster Controller:
+    - É escolhido Aleatoriamente.
+
+Um Broker pode ter N Topics de Informações.
+UM Topics Pode Possuir N Partitions.
+E pode haver Brokers que não possua Partitions de determinos Topics.
+
+Contem Partitions Leader e Partitions Follower.
+
+Um Broker pode ser Leader e possuir um ISR. onde:
+    - Leader mantem a lista de In-Sync-Replicas (ISR).
+    - Só fica na lista os Brokers que estão sincronizados. Sendo cada um deles, um possivel candidato para se tornar Leader.
+    - A lista se mantem atualizados atraves de Offsets solicitados pelas replicas.
+    - Existe uma tolenrância padrão de 10 segundos: Se a replica solicitou a mensagem mais recente nos ultimos 10 
+    segundos, ela se mantem na lista.
+
+Minimum ISR List:
+    - Pode-se definir um número minimo de replicas nna lista.
+    - Porem, se houver um problema, o Broker não aceitará mensagens informando que não há replicas suficientes.
+    - O Leader se torna "Read Only".
+
+Commited vs Uncommited:
+    - Podemos configurar um LEader para não considerar a mensagem confirmadas até que seja copiadas a todas as
+    replicas da lista ISR.
+    - Dessa forma, o Leader pode ter mensagens confirmadas e não confirmadas.
+    - Se perdemos o Leader, perdemos só as mensagens não confirmadas.
+    - Elas devem ser reenviadas pelos Producers, que ficam aguardando um sinal recebido (acknowledgment)
+    
+Replication Factor:
+    - As replicas são criadas em outros Brokers, que normalmente estarão em outros servidores.
+    - Se definirmos 4 Partições com 3 replicas, temos 12 Partições.
+    - Elas serão alocadas em Broker Disponiveis.
+    - Todas fazem parte do mesmo Topic.
+
+Segments:
+    - Dados ficam em arquivos fisicos: Diretorios nomeados "logs".
+    - Arquivos de Partições são divididos em arquivos menores, chamados de Segments.
+    - Os dados vão para o primeiros segmento, até o limite, então ele inicia um novo arquivo.
+    - O tamanho máximo padrão é de 1GB ou 7 Dias.
+        - Porem esses valores são customizaveis.
+
+Offset:
+    - O número de offset não reinicia em um novo segmento.
+    - O número do arquivo do segmento possui o numero do primeiro offset do segmento.
+    - Offset não é unico no Topic, e sim por Partition.
+
+Parttion Offset:
+    - Permite manter o estado;
+    - Reiniciar o processo caso necessário;
+    - Identificar Mensagens de forma Unica.
+
+Timeindex:
+    - Buscar mensagens baseados em intervalo de tempo.
+
+Controller:
+    - É o primeiro serviço a entrar no Cluster.
+    - Caso caia, outro Broker tenta se tornar Controller.
+        - Essa tentativa é continua, porem quando existente, é retornado um erro para a tentativa.
+    - Tem como uma das principais funcções, controlar a lista de Brokers do Cluster.
+
+--- Cluster Kafka
+
+Cada nó do cluster roda uma ou mais instancias do Kafka Broker.
+
+--- Bootstrap
+
+Você não precisa conhecer a estrutura do cluster
+    - O proprio Broker sabe a estrutura e informa ao cliente.
+    - Ao se conectar a um Broker, está se conectando ao servidor todo.
+
+-- Trocas
+
+Performance VS Garantia
+(Durability Guarantees)
+
+- O Producer pode ou não aguardar a confirmação do recebimento da mensagem.
+Impactando a performance do sistema.
+
+    - Parametros ACKS - Acknowledgements:
+        - 0: Producer sempre considera a mensagem recebida com sucesso.
+        - 1: Producer só considera a mensagem recebida com sucesso se confirmada pela
+        Partition Leader.
+        - All: Producer considera a mensagem recebida com sucesso apenas se todas as
+        replicas mínimas que deverão estar sincronizadas receberem a mensagem.
+
+Parametros:
+
+    retries -> Número de vezes que ocorrerá a tentativa de envio da mensagem.
+
+    retry.backoff.ms -> Tempo de espera antes da nova tentativa de envio.
+
+    delivery.timeout.ms -> Limite do tempo para a tentativa de envio da mensagem. Padrão de 2 Minutos.
+
+    max.in.flight.requests.per.connection -> Paralelismo, por padrão o valor é 5.
+
+    enable.idempotent -> É inserido o ID da mensagem pelo Producer. Caso ocorra problema de 
+    envio, ele garante a ordenação das mensagens, e também permite encontrar dados duplicados.
+
+
+Compressão de Texto:
+    - Pode possuir uma alta taxa de compressão: ~95%
+    - Alguns tipos semi estruturados comuns : CSV, JSON, XML, etc.
+
+Batchs Kafka:
+
+    Para processamento de grandes volumes de dados. 
+    Agrupamento de um conjunto de mensagens, e realizar o envio dessas Mensagens em 
+    um pequeno Batch, aumentando a taxa de compressão dos dados.
+
+    O tempo de envio do Bacth é questão de fraçoes de segundos, criando um pequeno delay,
+    mas nada consideravelmente critico.

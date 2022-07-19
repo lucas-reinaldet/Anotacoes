@@ -1,4 +1,4 @@
-pip freeze > requirements-dev.txt
+pip freeze > requirements.txt
 
 Irá listar todas as bibliotecas instaladas em sua venv para determinar 
 todos as instalações necessários para o seu proejto funcionar.

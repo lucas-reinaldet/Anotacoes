@@ -1,0 +1,32 @@
+
+API Kafka
+
+É uma forma de se comunicar com o Broker do Kafka, seja como Producer, seja como Consumer.
+Fornecendo a capacidade de implementar um cliente para o Kafka.
+
+É praticamente acessivel a qualquer linguage mde programação
+Exemplo: Java, Python, C#, C++, etc.
+
+Utilidade:
+
+    - Aplicação de Segurança: Analisar Logs "Proximo ao tempo real".
+    - Utilização de Spark, fornecendo a execução de inferências baseados em modelo de 
+    Machine Learning,
+    - Centralização de logs de diferentes locais e formatos.
+
+
+Arquitetura Basica:
+
+    Apache HTTP SERVER PROEJCT -> KAfka -> Apache Spark 
+
+
+É possivel realizar uma limpeza prévia (Pré Processamento) dos dados antes de transformar 
+por exemplo logs em mensagem do Kafka.
+
+API:
+
+Para Python, existe bibliotecas para a sua utilização.
+
+Exemplo: 
+    - Kafka-python;
+    - https://github.com/dpkp/kafka-python

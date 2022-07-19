@@ -1,0 +1,2 @@
+# Iniciar
+./elasticsearch/bin/elasticsearch

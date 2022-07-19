@@ -1,0 +1,65 @@
+
+
+Verificar:
+
+broker.id=0
+
+listeners=PLAINTEXT://:9092
+
+log.dirs=/tmp/kafka-logs
+
+# The number of threads that the server uses for receiving requests from the network and sending responses to the network
+num.network.threads=3
+
+
+# The number of threads that the server uses for processing requests, which may include disk I/O
+num.io.threads=8
+
+
+# The send buffer (SO_SNDBUF) used by the socket server
+socket.send.buffer.bytes=102400
+
+
+# The receive buffer (SO_RCVBUF) used by the socket server
+socket.receive.buffer.bytes=102400
+
+
+# The maximum size of a request that the socket server will accept (protection against OOM)
+socket.request.max.bytes=104857600
+
+
+# The default number of log partitions per topic. More partitions allow greater
+# parallelism for consumption, but this will also result in more files across
+# the brokers.
+num.partitions=1
+
+
+# The minimum age of a log file to be eligible for deletion due to age
+log.retention.hours=168
+
+
+# The maximum size of a log segment file. When this size is reached a new log segment will be created.
+log.segment.bytes=1073741824
+
+
+# The interval at which log segments are checked to see if they can be deleted according
+# to the retention policies
+log.retention.check.interval.ms=300000
+
+
+
+# Zookeeper connection string (see zookeeper docs for details).
+# This is a comma separated host:port pairs, each corresponding to a zk
+# server. e.g. "127.0.0.1:3000,127.0.0.1:3001,127.0.0.1:3002".
+# You can also append an optional chroot string to the urls to specify the
+# root directory for all kafka znodes.
+zookeeper.connect=localhost:2181
+
+# Timeout in ms for connecting to zookeeper
+zookeeper.connection.timeout.ms=18000
+
+# Número de replicas minimas.
+# Serve principalmente quando o producer possui como "request-requiderd-acks" = "all"
+# Ele só recebera a confirmação de mensagem entregue caso a quantidade minima
+# de replicas seja alcançada.
+min.insync.replicas=1

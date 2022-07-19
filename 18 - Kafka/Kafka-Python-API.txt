@@ -1,0 +1,15 @@
+- Kafka-python;
+- https://github.com/dpkp/kafka-python
+
+Instal:
+
+pip install kafka-python
+
+Necessário ter o Brokers Onlines:
+
+# Iniciar zookeeper
+./kafka/bin/zookeeper-server-start.sh kafka/config/zookeeper.properties
+
+# Iniciar 1 Broker
+./kafka/bin/kafka-server-start.sh kafka/config/server.properties
+

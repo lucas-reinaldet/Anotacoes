@@ -1,0 +1,18 @@
+# instalar Servidor Apache
+sudo apt update
+sudo apt install apache2
+sudo systemctl status apache2
+
+# Criar tópico apachelog
+./kafka/bin/kafka-topics.sh --bootstrap-server localhost:9092 --topic apachelog --create --partitions 3 --replication-factor 1
+
+# Iniciamos um consumer p
+./kafka/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic apachelog 
+
+# Iniciar o python
+python3 '/home/lucas/Área de Trabalho/Projetos/00 - Anotacoes/18 - Kafka/python/test_project/Producer-Log-Apache.py'
+
+# Acessar a página localhost para gerar os logs
+
+
+

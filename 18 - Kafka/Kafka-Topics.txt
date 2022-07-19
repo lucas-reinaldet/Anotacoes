@@ -1,0 +1,18 @@
+Os Topics se assemelham a uma tabela do banco de dados, onde4 existe a necessidade de uma
+governança antes de qualquer ação.
+
+    - São especificados em "Assuntos";
+    - Seus dados são imutaveis;
+
+Pode Possui:
+    - Access Log
+    - Error Log
+    - Agent Log
+    - Referrer Log
+
+Um Topic pode possuir diversos Partitions.
+Cada Partition é uma parte menor de um Topic.
+Armazenado em um unico nó do Cluster.
+As mensagens são distribuidas nas Partition.
+
+

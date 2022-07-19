@@ -1,0 +1,112 @@
+
+O Kafka Permite Adicionar ou remover um Producers ou Consumers a qualquer momentos.
+
+Producers:
+    - Realiza o envio dos dados para a Partition.
+    
+    Envio a Partition:
+        - Pode especificar diretamente no objeto ProducerRecord;
+        - Messagem pode ter uma Key:
+            - Isso garante que mensagens com a mesma chave vá sempre para a mesma partição, enquanto
+            o número de partições não mudar (função Hash).
+            - Se não existir Key, ocorre um rodizio.
+        - Pode ser definido sua propria lógica de particionamento.
+
+    Single Thread:
+        - O Single pode ser o suficiente para poucas mensagens.
+
+    Multi Thread:
+        - Escala o produtor, quando a produção é grande.
+        - Multi Thread Save: 
+            - Permite compartilhar o mesmo Thread e usar o mesmo producer para enviar mensagens 
+            em paralelo. É mais recomendado do que criar multiplos Producers.
+
+Consumers:
+    - Realiza a leitura dos dados de uma Partition de um Broker.
+    - Leitura é realizada em ordem do offset.
+    - Pode ler os dados de mais de uma Partition.
+        - Porem não possui uma ordem entre as Partitions.
+
+    Consumer Group:
+        - É um grupo de Consumers que divide a tarefa de processar dados de determinado
+        Topic.
+        - O Número maximo de Consumers é baseado no número de Partition.
+        - Possui um Coordenador de Group para distribuir as Partitions entre os integrantes
+        do grupo.
+        - Existe o numero maximo de um Consumer por Partition, onde caso possua outro tentando ler, 
+        o mesmo fica inativo ate a finalização do primeiro que iniciou a leitura.
+            - Porem existe o caso de existir mais de um grupo de Consumers, tornando a leitura 
+            de mais de um Consumer por Partition. Porem é necessário estarem em Consumer 
+            Group Distinto.
+
+Criar um Producers ou Consumers:
+    - Atraves do Console;
+    - Através de API;
+        - Pode ser utilizada em Linguagens como Java, Python, C++, etc.
+    - Através do Kafka Connect;
+        - É uma abstração da API para utilizar tanto para Producers e Consumers, permitindo
+        a configuração da configuração sem a criação de um programa.
+
+Trocas de Mensagens:
+    - Performance VS Garantia (Durability Guarantees)
+    - É necessário verificar a necessidade de resposta ao Producers, onde pode ou não
+    aguardar uma confirmação de recebimento da mensagem.
+        - Parametros ACKS - Acknowledgements:
+            - 0: Producer sempre considera a mensagem recebida com sucesso.
+            - 1: Producer só considera a mensagem recebida com sucesso se confirmada pela
+            Partition Leader.
+            - All: Producer considera a mensagem recebida com sucesso apenas se todas as
+            replicas mínimas que deverão estar sincronizadas receberem a mensagem.
+
+Transactions:
+    - É semanalhante ao uma transição do banco de dados.
+    - Suporte no Kafka:
+        - Topics devem possuir:
+            - Replication Factor >= 3;
+            - min.insync.replicas >= 2;
+
+Garantia de Entrega:
+    - Padrão: Pelo menos uma Vez
+        - Se houver falha ou não confirmação, o producer reenvia.
+        - Se o Broker receber a mensagem mais de uma vez, ele vai entregar mais de uma vez.
+
+    - No Maximo uma Vez:
+        - O Producer não reenvia a mensagem em caso de falha ou não confirmação.
+        - Haverá no máximo uma mensagem.
+        - Em caso de falha o Consumer não recebe.
+
+    - Exatamente uma vez:
+        - Se houver uma falha ou uma não confirmação, o Producer reenvia.
+        - Se o Broker receber a mensagem mais de uam vez, ele só vai persistir e entregar 
+        uma unica vez.
+
+
+- O Producer pode ou não aguardar a confirmação do recebimento da mensagem.
+Impactando a performance do sistema.
+
+    - Parametros ACKS - Acknowledgements:
+        - 0: Producer sempre considera a mensagem recebida com sucesso.
+        - 1: Producer só considera a mensagem recebida com sucesso se confirmada pela
+        Partition Leader.
+        - All: Producer considera a mensagem recebida com sucesso apenas se todas as
+        replicas mínimas que deverão estar sincronizadas receberem a mensagem.
+
+Parametros:
+
+    retries -> Número de vezes que ocorrerá a tentativa de envio da mensagem.
+
+    retry.backoff.ms -> Tempo de espera antes da nova tentativa de envio.
+
+    delivery.timeout.ms -> Limite do tempo para a tentativa de envio da mensagem. Padrão de 2 Minutos.
+
+    max.in.flight.requests.per.connection -> Paralelismo, por padrão o valor é 5.
+
+    enable.idempotent -> É inserido o ID da mensagem pelo Producer. Caso ocorra problema de 
+    envio, ele garante a ordenação das mensagens, e também permite encontrar dados duplicados.
+
+
+min.insync.replicas = 3
+
+Caso o numero minimo de replicas não seja possivel de ser alcançado, será retornado uma 
+mensagem de erro "NOT_ENOUGH_REPLICAS" que representa a situação.
+

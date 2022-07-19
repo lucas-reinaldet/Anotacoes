@@ -1,0 +1,35 @@
+- É uma abstração da API para utilizar tanto para Producers e Consumers, permitindo
+a configuração da configuração sem a criação de um programa.
+
+- Possui conectores prontos;
+- Só precisam ser instalados e configurados;
+- Pode ser usado com Producer ou Consumer;
+- Escalavel;
+- Tolerante a falha;
+- Balanceamento de carga;
+- Suporta o modo Standalone e Distributed.
+
+- É chamado de Connect Source quando estiver entre o Producer e Broker.
+- É chamado de Connect Sink quando utilizado entre o Broker e Consumer.
+
+- Connect Worker: Conexões individuais do Cluster, para o Source e Sink.
+
+- Para escalar, adiciona-se mais Workers.
+- Pode-se ter o Source e o Sink no mesmo Connect.
+
+Transformações SMTs:
+    O Kafka fornece a agrantia da entrega da informação ao seu destino. Tirando se si 
+    a responsabilidade de transformar dados.
+
+    Entretanto, existe a funcionalidade de transformações simples dos dados. como:
+        - InsertField;
+        - ReplaceField;
+        - MaskField;
+        - SetSchemaMetadata;
+        - HoistField;
+        - ExtractField;
+        - SetSchemaMetadata;
+        - TimestampRouter;
+        - RegexRouter;
+        - Filter;
+

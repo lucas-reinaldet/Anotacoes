@@ -1,0 +1,4 @@
+
+Ferramenta de indexação, armazenamento e busca de dados.
+
+O Índice é o equivalente a uma tabela.

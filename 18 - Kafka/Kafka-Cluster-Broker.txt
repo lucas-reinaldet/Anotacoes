@@ -1,0 +1,72 @@
+
+Conceito Tradicional:
+
+Normalmente em um sistema distribuido é preciso haver um gerenciamento. 
+Um nó é eleito Master e as vezes, tem a dedicação exclusiva para a gestão do Cluster.
+
+Realiza o gerenciamento de recursos.
+Controla a Entrada e Saida de Nós.
+Gerencia Falhas.
+
+Cluster Kafka:
+
+Não possui um nó Master, entretanto possui um Controller, que é um Broker eleito para 
+atividades especificas de gestão. Entretanto continua com os seus afazeres tradicionais.
+
+Zookeeper:
+    - Ferramenta de gestão de recursos, usada em diversos sistemas distribuidos.
+    - Open Source e Mantido pela Apache.
+    - Atualmente Obrigatório o seu uso no Kafka.
+        - Porem é de desejo dos desenvolvedores a sua remoção em versões futuras.
+    - Pode-se ter um cluster de Zookeeper.
+    - Cada um pode gerenciar um ou mais Brokers.
+    - Existe no macimo um Leader com um ou mais Followers.
+
+O Kafka é feito para se trabalhar em Cluster
+
+--
+
+Para realizar o teste de forma local, e para fins didaticos
+será criado trẽs serviços locais do Kafka.
+
+Primeiramente é necessário realizar a copia do arquivos de 
+propriedades "server.properties" localizado no diretorio
+"config".
+
+Para cada arquivo, será necessário alterar:
+
+broker.id=0
+
+listeners=PLAINTEXT://:9092
+
+log.dirs=/tmp/kafka-logs
+
+Desta forma, é possivel iniciar as três isntancias do Kafka.
+
+Observação: Não será necessário instanciar outras isntancias do Zookeeper.
+
+-----------------------------
+
+Parametros Brokers:
+
+broker.id = É um numero inteiro de identificação do Broker no Cluster Kafka.
+
+log.dir = Diretorio de logs do Broker, onde é salvo as
+mensagens.
+
+num.partitions = Número de partições padrão por Topic.
+
+zookeeper.connect = Endereço do zookeeper, pode ser inserido
+mais de um, sendo assim separado por ","
+
+Retenção de log: (Mensagnes)
+
+log.retentions.hour = Quantidade de horas que um log será
+armazenado.
+
+log.retentions.bytes = Tamanho maximo que um log pode atingir.
+
+log.segment.bytes = Tamanho de um segmento, quando atingindo, é realizado uma divisão fisica
+do arquivo.
+
+log.retention.check.interval.ms = Intervalo para chegar se o log pode ser excluido.

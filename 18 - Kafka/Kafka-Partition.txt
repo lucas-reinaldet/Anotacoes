@@ -1,0 +1,45 @@
+
+- Partitions não precisam manter o mesmo número de Topics.
+- O número de Parttion é definido no momento de sua criação, e não pode ser dividido posteriormente.
+- Só pode haver um Consumer por Partition.
+- O número de Consumers não pode ser maior que o numero de Partitions.
+- Partition pode estar replicada em mais de um Broker. (Fator de Replicação)
+    - Determina quantas partições um Topic Possui.
+    - Traz a caracteristica de Alta disponibilidade.
+- Topic Parttion:
+    - Partições nada mais são do que Diretorios usados para dividir os dados.
+    - Podem estar ou não no mesmo servidor.
+- As partições são chamadas de Leaders.
+- As cópias são chamadas de Followers.
+- O número de Followers depende do fator de replicação.
+- Distribuição:
+    - Sempre é realizado uma tentativa de balanceamento entre as partições.
+    - As cópias fica localizada em locais distintos - Aumentando a tolerância a falhas.
+    - Os Racks também são considerados, pois o Rack inteiro pode Falhar.
+
+As Partition Leader são definidos de forma aleatoria, não é configurado.
+
+Posteriormente define as Partitions Followers.
+        
+-- Leader e Follower:
+    - Leader:
+        - A Partition de Leader é responsável por todas as requisições de Producers e Consumers.
+        - O Producers recebe uma lista de Leaders e decide para qual Partition irá mandar os dados.
+        - O Producers manda para o Broker da Partitions Leader.
+        - O Consumers lê as mensagens da Partitions Leader.
+
+    - Follower
+        - Não respondem as requisições;
+        - Apenas se mantem atualizados com o Leader;
+        - Ficam aguardando para serem eleitos Leader, caso o Leader falhe.
+        - Followers podem falhar em se manter sincornizados. Caso ocorra, o mesmo não é eleito Leader.
+
+- Partition Offset:
+    - Identificador único de uma mensagem na partição.
+    - É gerado Automaticamente.
+    - É imutavel;
+    - Gerado em Ordem de Chegada;
+    - A ordem só existe na partição, mesmo em um mesmo Topic.
+    - São Commitados num tópico chamado "__consumer_offsets__"
+    - Um consumidor pode ler novamente a partir do número do offset.
+    - Commit é o Ponto de Referência.

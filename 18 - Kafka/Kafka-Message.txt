@@ -1,0 +1,32 @@
+
+São so dados rececidos pelos Producers.
+
+Retenção de Dados:
+    - Pode ser configurado:
+        - Por tempo;
+        - Por tamanho do Topics.
+        - Pode reter apenas a última mensagem (log compacted)
+    - As mensagens são distribuidas entre Partitions de mesmo Topic.
+    - O número do seu offset não é unico. Para determinar uma PK, é
+    necessário saber o número do Topic, Partition e o Número do Offset.
+
+
+Elementos:
+    - Obrigatorios:
+        - Topic;
+        - Mensagem;
+    - Opcional:
+        - Partition:
+            - Pode-se definir com base na estrátegia de Particionamento.
+            - Pode usar-se o Default: Hash Key ou Rodizio.
+        - Timestamp:
+            - Pode ser definido, mas também haverá um caso não seja definido.
+            - Pode ser a hora da criação da mensagem ou a hora que é registrada no log.
+        - Message Key:
+            - Usado apra particionamento, Agrupamento, Joins, etc.
+
+Serialização:
+    - Dados são serializados para transferir pela rede.
+    - Podem ser usados serializadores como Avro (usado por padrão), possibilita o 
+    versionamento de esquemas além da compactação.
+    - Ideal ser compacto para a transferência de informações.

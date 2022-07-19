@@ -1,0 +1,35 @@
+
+
+Para processamento de grandes volumes de dados. 
+Agrupamento de um conjunto de mensagens, e realizar o envio dessas Mensagens em 
+um pequeno Batch, aumentando a taxa de compressão dos dados.
+
+O tempo de envio do Bacth é questão de fraçoes de segundos, criando um pequeno delay,
+mas nada consideravelmente critico.
+
+Configurações:
+    - compression.type: Padrão None
+        - none, gzip, snappy, iz4, zstd
+
+    - linger.ms: Tempo de espera para o agrupamento de mensagens em Batchs.
+
+    - max.request.size: Tamanho máximo de uma requisição em Batch. Caso o valor seja 
+    alcançado, o tempo de espera é ignorado e os dados são enviados.
+
+    - batch.size: Tamanho padrão do Batch quando criado para o envio ao Consumer.
+
+Local de compresão:
+    - Topic: Será realizado a compressão quando a mensagem chegar ao Broker.
+
+    - Producer: Será realizado a compressão no Producer, e só depois será enviado ao 
+    Broker.
+
+compression.type:
+    - Gzip -> Alta taxa de Compressão, Alto custo de Processamento.
+    - Snappy -> Média taxa de Compressão, Médio custo de Processamento.
+    - Zstd -> Média taxa de Compressão, Médio custo de Processamento.
+    - Lz4 -> Baixa taxa de Compressão, Baixo custo de Processamento.
+
+Escolha do Type:
+    - Sempre irá depende das necessidades de cada projeto, sendo necessário entender bem
+    os requisitos e a realização de testes para uma melhor escolha.
