@@ -14,6 +14,7 @@ sudo apt-get install apt-transport-https ca-certificates curl gnupg-agent softwa
 
 ## Adicione a chave oficial do Docker
 
+
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 
 ## Verifique se a chave foi adicionada
@@ -58,6 +59,17 @@ usuários que fazem parte deste grupo.
 OBS: O quarto comando é 'uma gambiarra' que adiciona o nosso usuário a um grupo 'virtual' que demos
 o nome de docker para evitar que tenhamos que reiniciar o computador.
 
+uma alternativa é adicionar o seu usuário no grupo docker
+
+## Criando um Grupo Docker
+groupadd docker
+
+## Adicionar o Usuário no grupo Docker
+sudo usermod -a -G docker $(whoami)
+
+# Este comando é 'uma gambiarra' que adiciona o nosso usuário a um grupo 'virtual' que demos
+# o nome de docker para evitar que tenhamos que reiniciar o computador.
+newgrp docker
 
 ## Testar a instalação executando o Hello World no terminal
 

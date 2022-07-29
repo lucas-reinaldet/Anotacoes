@@ -169,6 +169,10 @@ Considerar um arquivo base, para ignorar qualquer tipo de modificação no arqui
 
 git update-index --assume-unchanged --add projeto/arquivo
 
+reverter comando anterior 
+git update-index --no-assume-unchanged --add projeto/arquivo
+
+____________________________________________
 
 O erro fatal: refusing to merge unrelated histories geralmente acontece quando você 
 tenta fazer o git pull de um repositório remoto, mas o seu repositório local possuí 
