@@ -15,9 +15,7 @@
 # Vai abrir um console e apresentar todas as mensagens enviadas
 # Se enviar outra mensagem no console, vai apresentar automaticamente.
 
-# apagar o diretorio de topicos
-rm -r kafka*
-rm -r zookeeper
+
 
 --
 

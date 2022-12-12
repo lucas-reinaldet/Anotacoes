@@ -1,0 +1,6 @@
+
+execute()executará uma instrução como uma chamada de bloqueio que não retornará até que a execução da instrução seja concluída.
+
+execute_async()enviará uma instrução como uma chamada assíncrona que retornará imediatamente com um response_futureobjeto que você pode usar para recuperar os resultados posteriormente. Ao chamar execute_async, seu programa pode continuar sem esperar que a instrução termine. Como não é bloqueante, você pode enviar muitas declarações chamando isso repetidamente e fazer com que elas estejam "em vôo" ao mesmo tempo.
+
+execute_concurrent()é uma chamada de bloqueio que executará uma lista de instruções em paralelo e retornará uma lista dos resultados. Como um pool de threads, você pode especificar quantas instruções deseja permitir que ele seja executado por vez. E você pode definir um sinalizador se quiser que ele retorne imediatamente se qualquer uma das instruções resultar em erro.

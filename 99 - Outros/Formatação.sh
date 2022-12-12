@@ -49,6 +49,9 @@ function configuracoes_essenciais() {
     echo 'instalar Java'
     sudo apt install curl mlocate default-jdk -y
 
+    echo 'Instalar Controle de Voz'
+    sudo apt-get install pavucontrol
+
     echo 'Instalação do Anaconda'
     sudo apt-get install libgl1-mesa-glx libegl1-mesa libxrandr2 libxrandr2 libxss1 libxcursor1 libxcomposite1 libasound2 libxi6 libxtst6
     wget -q -O anaconda.sh https://repo.anaconda.com/archive/Anaconda3-2021.11-Linux-x86_64.sh
@@ -84,9 +87,9 @@ function configuracoes_essenciais() {
     echo "Instalação do VLC."
     sudo snap install vlc
 
-    echo 'Instalação do PyCharm via Snap.'
-    sudo apt-get install snap
-    sudo snap install pycharm-community --classic
+    # echo 'Instalação do PyCharm via Snap.'
+    # sudo apt-get install snap
+    # sudo snap install pycharm-community --classic
 
 }
 
@@ -242,6 +245,11 @@ function manual() {
     echo 'Definir senha para o usuário postgres do linux'
     sudo passwd postgres 
 
+    echo 'Instalação do OBS'
+    sudo apt-get install ffmpeg
+    sudo add-apt-repository ppa:obsproject/obs-studio
+    sudo apt update
+    sudo apt-get update && sudo apt-get install obs-studio
 }
 
 variaveis

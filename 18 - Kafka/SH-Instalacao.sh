@@ -14,7 +14,7 @@ java -version
 wget https://dlcdn.apache.org/kafka/3.2.0/kafka_2.13-3.2.0.tgz
 
 # descompactar
-tar -xzf kafka_2.13-3.2.0.tgz
+tar -xzvf kafka_2.13-3.2.0.tgz .
 
 # Remover arquivo TGZ
 rm kafka_2.13-3.2.0.tgz

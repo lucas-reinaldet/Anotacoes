@@ -15,3 +15,5 @@ sudo apt-get update
 
 sudo apt-get upgrade
 sudo /usr/local/cuda-11.7/bin/cuda-uninstaller
+
+sudo apt-get remove --purge '^nvidia-.*'
