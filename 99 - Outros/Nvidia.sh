@@ -19,6 +19,6 @@ sudo apt install --reinstall dkms
 
 sudo ubuntu-drivers autoinstall
 
-sudo apt install nvidia-driver-510
+sudo apt install nvidia-driver-525
 
 reboot

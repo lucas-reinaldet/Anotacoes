@@ -1,0 +1,1 @@
+nodetool -h localhost -p 7199 snapshot prototipo
