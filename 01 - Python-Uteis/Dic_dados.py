@@ -26,7 +26,7 @@ virgula = ''
 arquivo = open(f'{GR_BASE_DIR}/SQL-cadastro-dic.sql','w')
 
 arquivo.write(f'INSERT INTO dic_dados \n')
-arquivo.write(f'    (ddm_schema, ddm_tabela, ddm_campo, ddm_tipo, ddm_tamanho, ddm_especificacoes, ddm_observacao)')
+arquivo.write(f'    (schema, tabela, campo, tipo, tamanho, especificacoes, observacao)')
 arquivo.write(f'\n')
 arquivo.write(f'VALUES')
 arquivo.write(f'\n')

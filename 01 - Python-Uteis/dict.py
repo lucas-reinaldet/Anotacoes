@@ -2,25 +2,25 @@ import json
 
 dic = {
     "dataRegistro": "9/8/2010 23:59:59",
-    "camera": {
-        "codigo": 47710,
-        "sentido": "Centro",
-        "empresa": {
-            "nomeEmpresa": "6VEIP3KPE7GLJDD1WGT1F0FHLK43GB"
+    "a": {
+        "b": 47710,
+        "c": "Centro",
+        "d": {
+            "e": "6VEIP3KPE7GLJDD1WGT1F0FHLK43GB"
         }
     },
-    "velocidade": "104",
-    "latitude": "-45.0",
-    "longitude": "-45.0",
-    "grauFidelidade": "86.0",
-    "ocorrencia": {
-        "placa": "QX5BZ56",
-        "marca": "JXBD6MTL8J",
-        "modelo": "69NHD04XYQ",
-        "cor": "VR24DCGF49",
-        "codigoOcorrenciaMonitoramento": 15,
-        "descricaoSituacaoOcorrencia": "Descri\u00e7\u00e3o unica!",
-        "dataHoraRegistroOcorrencia": "15/4/2020 23:59:59"
+    "f": "104",
+    "g": "-45.0",
+    "h": "-45.0",
+    "i": "86.0",
+    "j": {
+        "k": "QX5BZ56",
+        "l": "JXBD6MTL8J",
+        "m": "69NHD04XYQ",
+        "n": "VR24DCGF49",
+        "o": 15,
+        "p": "Descri\u00e7\u00e3o unica!",
+        "q": "15/4/2020 23:59:59"
     }
 }
 

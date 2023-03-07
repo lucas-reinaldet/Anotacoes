@@ -133,7 +133,7 @@ function install_postgresql_pgadmin() {
     sudo apt-get install postgis -y
 
     # echo "Instalação do PGAdmin4."
-    # sudo apt install pgadmin4-desktop -y
+    sudo apt install pgadmin4-desktop -y
 
     echo "PostgreSQL | Criando a senha da base para o usuário postgres"
     sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD '${DB_PWD_USER_POSTGRES}'"
