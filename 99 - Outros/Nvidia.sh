@@ -5,7 +5,7 @@ ubuntu-drivers devices
 
 -- Instalar a versão recomendada
 
-sudo apt install nvidia-driver-X
+sudo apt install nvidia-driver-515
 
 sudo reboot
 

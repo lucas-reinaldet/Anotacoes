@@ -10,6 +10,8 @@ sudo service ssh stop
 
 porta padrão é 22
 
+
+
 ssh nomeusuario@ip-da-maquina -p numeroporta
 
 Mudar porta ssh:

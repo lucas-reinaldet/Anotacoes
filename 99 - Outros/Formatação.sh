@@ -257,3 +257,46 @@ configuracoes_essenciais
 # install_postgresql_pgadmin
 unset_variaveis
 # Executar comandos do metodo Manual
+
+# Abra o terminal (pressionando Ctrl+Alt+T).
+
+# Verifique o tamanho da partição de swap atual com o comando:
+
+# css
+# Copy code
+# sudo swapon --show
+# Este comando exibirá o nome do arquivo de swap e o tamanho atual da partição de swap.
+
+# Desative a partição de swap atual com o comando:
+# bash
+# Copy code
+# sudo swapoff -v /swapfile
+# Este comando desativará a partição de swap atual.
+
+# Crie um novo arquivo de swap com o tamanho desejado com o seguinte comando:
+# bash
+# Copy code
+# sudo fallocate -l <tamanho> /swapfile
+# Substitua <tamanho> pelo tamanho desejado, por exemplo, "1G" para 1 gigabyte.
+
+# Altere as permissões do arquivo de swap com o seguinte comando:
+# bash
+# Copy code
+# sudo chmod 600 /swapfile
+# Formate o arquivo de swap com o seguinte comando:
+# bash
+# Copy code
+# sudo mkswap /swapfile
+# Ative o novo arquivo de swap com o seguinte comando:
+# bash
+# Copy code
+# sudo swapon /swapfile
+# Verifique se a nova partição de swap está sendo usada corretamente com o comando:
+# css
+# Copy code
+# sudo swapon --show
+# Para tornar a nova partição de swap permanente, adicione-a ao arquivo /etc/fstab com o seguinte comando:
+# bash
+# Copy code
+# echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
+# Isso adicionará a nova partição de swap ao arquivo /etc/fstab, o que garantirá que ela seja ativada automaticamente na inicialização do sistema.
