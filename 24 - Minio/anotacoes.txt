@@ -1,0 +1,96 @@
+
+MinIo
+
+Multi-Clound Object Storage
+
+- Solução de Armazenamento de Alto Desempenho
+
+- Foi desenvolvido para ser implantado em qualquer ambiente
+
+- Possui Licença Dupla: GNU Affero General Public License V.3.0 e MinIo Commercial License
+
+
+Vantagens:
+
+- Simplicidade em sua implantação
+
+- Alta Performance
+
+- Nativo Kubernetes
+
+- Replicação Ativa Ativa
+
+- Granularidade no Nivel do Bucket e suporte a replicação Sincrona ou Quase Sincrona;
+
+- Recurso de Criptografia Forte;
+
+- Possui uma interface de Gerenciamento de Dados Automatizados;
+-- Usuário;
+-- Linha de comando;
+-- APIs;
+
+- Possui gerenciamento de Usuários;
+
+- Compatibilidade com a AWS S3;
+
+- Suporte ao S3 Select;
+
+- Multi-Cloud Storage;
+
+- Data Life Cycle Management & Tiering
+
+-- A complexidade do gerenciamento de dados a medida que o seu volume aumenta se torna mais complexo, sendo assim de responsabilidade sua;
+
+-- Recursos de Protelção de Dados dentro e entre Nuvens;
+
+-- Trabalha com Versionamento, Bloqueio de Objetos e outros componentes.
+
+- Ecalabilidade
+
+-- Simplicidade;
+
+-- Horizontalmente;
+
+- Identify & Access Management
+-- MinIo IAM compativel com o AWS Identity and Access Managements (IAM);
+
+
+- Versão & Retenção:
+
+-- Para evitar exclusão de objetos por um periodo de tempo, o controle de versao deve ser ativado junto a politica de retenção.
+
+- MinIo Operator;
+
+- MinIo Core;
+
+Bucket:
+
+Objetc Immutability -> Certificada pela Veeam e, Cohasset Partners (17a-4f, 4511 e CFTC 1.31);
+
+Sempre que ocorre uma modificação em suas configurações, é criado um novo bucket e excluido o anterior - mesmo que visualmente possa parecer o mesmo.
+
+É -> Um diretorio ou area para armazenamento;
+
+Proteção de dados contra exclusão de dados;
+
+permite o bloqueio de objetos, politicas de retenção e retenção legais, governança e conformidade;
+
+Possui a capacidade de versionamento de dados -> Sempre que vc faz um update, nunca é modificado o registro e sim criado uma nova versao daquele dado ( Pode ser criado a politica de armazenamento das versoes )
+
+- Cota:
+
+    - Limita a quantidade de dados que um Bucket pode ter!
+
+    - É uma boa prática a delimitação de cotas;
+
+
+Objetos:
+
+- Cada objeto é um Arquivo;
+
+Drivers:
+
+- Unidade Física de Armazenamento;
+
+
+Observação: O MinIO não faz a identificação do tipo de arquivo que está sendo inserido, a responsabilidade por indicar isso fica por parte do usuário.

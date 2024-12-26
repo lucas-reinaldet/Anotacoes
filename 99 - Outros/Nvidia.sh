@@ -5,7 +5,7 @@ ubuntu-drivers devices
 
 -- Instalar a versão recomendada
 
-sudo apt install nvidia-driver-515
+sudo apt install nvidia-driver-535
 
 sudo reboot
 
@@ -19,6 +19,6 @@ sudo apt install --reinstall dkms
 
 sudo ubuntu-drivers autoinstall
 
-sudo apt install nvidia-driver-525
+sudo apt install nvidia-driver-535
 
 reboot

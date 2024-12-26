@@ -1,0 +1,3 @@
+O Tika do Apache Kafka, faz ia identificação do tipo de arquivo, suporta mais de 100 tipos diferentes.
+
+filetype é uma biblioteca python que faz a analise do documento para verificar o seu tipo.

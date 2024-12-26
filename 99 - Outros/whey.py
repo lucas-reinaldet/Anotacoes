@@ -9,28 +9,28 @@ valores = \
         "concentracao": 27,
         "dose": 30,
         "peso_total": 1000,
-        "preco": 160.00
+        "preco": 144.00
     },
     {
         "nome": "Whey Protein Concentrado 80%",
         "concentracao": 24,
         "dose": 30,
         "peso_total": 1000,
-        "preco": 98.00
+        "preco": 110.00
     }, 
         {
         "nome": "Whey Medium Protein ",
         "concentracao": 18,
         "dose": 30,
         "peso_total": 1000,
-        "preco": 62.00
+        "preco": 61.00
     }, 
     {
         "nome": "Basic Whey",
         "concentracao": 10,
         "dose": 30,
         "peso_total": 1000,
-        "preco": 42.00
+        "preco": 41.00
     },  
 ]
 

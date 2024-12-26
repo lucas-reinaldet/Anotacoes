@@ -52,21 +52,9 @@ function configuracoes_essenciais() {
     echo 'Instalar Controle de Voz'
     sudo apt-get install pavucontrol
 
-    # echo 'Instalação do Anaconda'
-    # sudo apt-get install libgl1-mesa-glx libegl1-mesa libxrandr2 libxrandr2 libxss1 libxcursor1 libxcomposite1 libasound2 libxi6 libxtst6
-    # wget -q -O anaconda.sh https://repo.anaconda.com/archive/Anaconda3-2021.11-Linux-x86_64.sh
-    # sh anaconda.sh
-    # sudo rm -r anaconda.sh
-    # sudo ln -s ~/anaconda3/bin/anaconda-navigator /usr/bin/anaconda
-    # sudo echo '
-    # export ANACONDA_HOME=~/anaconda3
-    # export PATH=$PATH:$ANACONDA_HOME/bin
-    # ' >> ~/.bashrc
-    # source ~/.bashrc
-
     echo 'Sincronizar com o projeto de Anotações do GIT'
     mkdir ~/'Área de Trabalho'/Projetos
-    git clone https://github.com/lucas-reinaldet/Anotacoes.git '00 - Anotacoes'
+    git clone https://github.com/lucas-reinaldet/Anotacoes.git ~/'Área de Trabalho'/Projetos/'00 - Anotacoes'
 
     echo "Selecionando Driver da NVIDIA."
     local DRIVER_NVIDIA=""
@@ -87,9 +75,8 @@ function configuracoes_essenciais() {
     echo "Instalação do VLC."
     sudo snap install vlc
 
-    # echo 'Instalação do PyCharm via Snap.'
-    # sudo apt-get install snap
-    # sudo snap install pycharm-community --classic
+    sudo snap install antares
+
 
 }
 
