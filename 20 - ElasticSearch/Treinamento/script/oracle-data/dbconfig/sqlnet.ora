@@ -1,0 +1,5 @@
+NAMES.DIRECTORY_PATH = (EZCONNECT, TNSNAMES)
+# See https://github.com/gvenzl/oci-oracle-xe/issues/43
+DISABLE_OOB=ON
+BREAK_POLL_SKIP=1000
+

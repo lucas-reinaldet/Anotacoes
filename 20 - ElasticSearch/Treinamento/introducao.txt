@@ -1,0 +1,21 @@
+
+Elastic Seach: 
+
+    Performance absurda na pesquisa de dados, o armazenamento é de documentos
+como mongodb. Vc salva json ao inves de dados em tabelas. 
+    A Observabilidade é algo de grande importancia para os projetos. Permitindo
+uma analise de log das aplicações, atraves do Kibana e Elastic Search.
+    Motor de busca e analise.
+
+
+Elastich Seacrh: Percorrer carga de dados e retornar os dados no menor tempo; 
+com foco de Performance;
+
+Kibana: Visualização de dados;
+
+LogStash: Serve para coletar, processar e integrar log de diferentes sistemas para o seu 
+armazenamento no elastichsearch.
+
+ELK Estack != Elastic Estack
+
+https://github.com/bodanesemateus/elastic-stack-with-oracle

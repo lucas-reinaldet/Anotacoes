@@ -1,4 +1,4 @@
-sudo apt-get remove discord
+sudo apt-get remove discord -y
 sudo dpkg -r discord
 sudo rm -rf /etc/discord/
 

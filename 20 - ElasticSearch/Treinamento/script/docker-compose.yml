@@ -1,0 +1,131 @@
+version: "3.7"
+services:
+  oracle-db:
+    image: gvenzl/oracle-xe:21-slim
+    container_name: oracle-db
+    ports:
+      - "1521:1521"
+      - "5500:5500"
+    environment:
+      ORACLE_PASSWORD: "teste123"
+    volumes:
+      - oracle-data:/opt/oracle/oradata
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "echo 'SELECT 1 FROM dual;' | sqlplus -s sys/teste@123@//localhost:1521/XEPDB1 as sysdba",
+        ]
+      interval: 30s
+      timeout: 20s
+      retries: 5
+    networks:
+      - mynetwork
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.10.2
+    container_name: elasticsearch
+    environment:
+      - node.name=elasticsearch
+      - cluster.name= es-docker-cluster
+      - bootstrap.memory_lock=true
+      - http.cors.enabled=true
+      - http.cors.allow-origin="*"
+      - discovery.type=single-node
+      - xpack.security.enabled=true
+      - ELASTIC_PASSWORD=teste123
+      - ES_JAVA_OPTS=-Xms1g -Xmx1g
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+      - 9300:9300
+    networks:
+      - mynetwork
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.10.2
+    container_name: kibana
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    ports:
+      - 5601:5601
+    volumes:
+      - /home/mateusbodanese/elastic-stack/kibana.yaml:/usr/share/kibana/config/kibana.yml
+    networks:
+      - mynetwork
+
+  minha-api:
+    build: .
+    container_name: minha-api
+    ports:
+      - "3000:3000"
+    environment:
+      - DB_USER=teste
+      - DB_PASSWORD=TESTE123
+      - DB_CONNECT_STRING=oracle-db:1521/XEPDB1
+      - ELASTICSEARCH_NODE=http://elasticsearch:9200
+      - ELASTIC_APM_SERVER_URL=http://apm-server:8200
+      - ELASTIC_APM_SERVICE_NAME=minha-api
+      - ELASTIC_USER=elastic
+      - ELASTIC_PASSWORD=teste123
+    depends_on:
+      oracle-db:
+        condition: service_healthy
+    networks:
+      - mynetwork
+
+  apm-server:
+    image: docker.elastic.co/apm/apm-server:8.10.2
+    container_name: apm-server
+    volumes:
+      - ./apm/apm-server.yaml:/usr/share/apm-server/apm-server.yml
+    ports:
+      - "8200:8200"
+    networks:
+      - mynetwork
+
+  metricbeat:
+    image: docker.elastic.co/beats/metricbeat:8.10.2
+    container_name: metricbeat
+    user: root
+    volumes:      
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./beats/metric/metricbeat.yml:/usr/share/metricbeat/metricbeat.yml
+    restart: on-failure
+    networks: 
+      - mynetwork
+
+  heartbeat:
+    image: docker.elastic.co/beats/heartbeat:8.10.2
+    container_name: heartbeat
+    volumes:      
+    - ./beats/heartbeat/heartbeat.yml:/usr/share/heartbeat/heartbeat.yml
+    environment: 
+    - setup.kibana.host=kibana:5601
+    networks: 
+      - mynetwork
+
+  filebeat:
+    container_name: filebeat
+    user: root
+    image: docker.elastic.co/beats/filebeat:8.10.2 
+    volumes:
+      - ./beats/filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+      - /var/lib/docker:/var/lib/docker:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /docker/proxy/log:/var/log/proxy/log
+    networks:
+      - mynetwork
+
+volumes:
+  oracle-data:
+  esdata:
+    driver: local
+
+networks:
+  mynetwork:

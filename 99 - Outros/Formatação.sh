@@ -135,6 +135,8 @@ function install_postgresql_pgadmin() {
     # echo "Instalação do PGAdmin4."
     sudo apt install pgadmin4-desktop -y
 
+    sudo snap install dbeaver-ce
+
     echo "PostgreSQL | Criando a senha da base para o usuário postgres"
     sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD '${DB_PWD_USER_POSTGRES}'"
 

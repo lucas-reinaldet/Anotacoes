@@ -1,0 +1,12 @@
+#  Conexão com o Elasticsearch
+server.host: "0.0.0.0"
+elasticsearch.hosts: [ "http://elasticsearch:9200" ]
+
+# Segurança
+xpack.security.enabled: true
+xpack.encryptedSavedObjects.encryptionKey: "qANYyOE+o0TzKcrjVTkxPg2tp0Ytxuks0AIpQEeNQFE="
+
+# Configuração de autenticação
+elasticsearch.username: "kibana_system"
+elasticsearch.password: "teste123"
+

@@ -1,8 +1,10 @@
 # ignorar Venv
-venv*/**
+**/*venv*/**
 
 # Pasta Código-Estudos
 estudos/**
 
 # Material-Cursos
 **/Material-Curso*/**
+
+**/node_modules/**

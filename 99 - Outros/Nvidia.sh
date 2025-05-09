@@ -5,7 +5,7 @@ ubuntu-drivers devices
 
 -- Instalar a versão recomendada
 
-sudo apt install nvidia-driver-535
+sudo apt install nvidia-driver-570
 
 sudo reboot
 
