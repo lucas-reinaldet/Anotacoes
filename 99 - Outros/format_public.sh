@@ -44,7 +44,8 @@ function configuracoes_essenciais() {
     sudo apt-get install openssh-server -y
 
     echo 'Instalação Spotify'
-    snap install spotify
+    sudo apt install snapd
+    sudo snap install spotify
 
     echo 'instalar Java'
     sudo apt install curl mlocate default-jdk -y
