@@ -19,6 +19,8 @@ sudo apt install --reinstall dkms
 
 sudo ubuntu-drivers autoinstall
 
+ubuntu-drivers devices
+
 sudo apt install nvidia-driver-535
 
 reboot
